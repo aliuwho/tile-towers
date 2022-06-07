@@ -10,7 +10,7 @@ export function randInt(val): number {
  * Javascript implementation taken from Stack Overflow:
  * https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
  */
-export function shuffle(array): any[] {
+export function shuffleArray(array: any[]): any[] {
     let currentIndex = array.length, randomIndex;
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
