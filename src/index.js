@@ -36,10 +36,10 @@ class BoardComponent extends React.Component {
     //     });
     // }
 
-    renderTile(tileIndex: number) {
+    renderTile(tileType: number) {
         return (
             <Tile
-                value={tileIndex}
+                value={tileType}
                 // onClick={() => this.props.onClick(tile)}
             />
         );
