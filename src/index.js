@@ -1,84 +1,78 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {
-    makeBoard,
-    WIDTH_LEVEL_FOUR_A,
-    WIDTH_LEVEL_FOUR_B,
-    WIDTH_LEVEL_FOUR_C,
-    WIDTH_LEVEL_THREE,
-    WIDTH_LEVEL_TWO
-} from "./board";
-import {makeTiles} from "./game";
+import {newBoard} from "./board";
+
+// Represents width of rectangle grids on specified layer
+const WIDTH_LEVEL_ONE = 2;
+const WIDTH_LEVEL_TWO = 4;
+const WIDTH_LEVEL_THREE = 6;
+const WIDTH_LEVEL_FOUR_A = 12;
+const WIDTH_LEVEL_FOUR_B = 8;
+const WIDTH_LEVEL_FOUR_C = 10;
 
 function Tile(props) {
     return (
-        <button className="tile" onClick={props.onClick}>
+        // <button className="tile" onClick={props.onClick}>
+        <button className="tile">
             {props.value}
         </button>
     );
 }
 
-class Board extends React.Component {
+class BoardComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tiles: makeBoard(makeTiles())
+            board: newBoard()
         };
     }
 
-    handleClick(i) {
-        const tiles = this.state.tiles.slice();
-        tiles[i] = 'help';
-        this.setState({
-            tiles: tiles
-        });
-    }
+    // handleClick(i) {
+    //     const tiles = this.state.tiles.slice();
+    //     tiles[i] = 'help';
+    //     this.setState({
+    //         tiles: tiles
+    //     });
+    // }
 
-    renderTile(tile: Tile) {
+    renderTile(tileIndex: number) {
         return (
             <Tile
-                value={tile.position}
-                onClick={() => this.props.onClick(tile)}
+                value={tileIndex}
+                // onClick={() => this.props.onClick(tile)}
             />
         );
     }
 
-    renderZero() {
+    renderLayerZero() {
         return (
             <div className="board-layer">
                 <div className="board-row">
-                    {this.renderTile(this.state.tiles[0][0])}
+                    {this.renderTile(this.state.board.types[0])}
                 </div>
             </div>
         )
     }
 
-    renderOne() {
-        const layer: Tile[] = this.state.tiles[1]
-        return (
-            <div className="board-layer">
-                <div className="board-row">
-                    {[this.renderTile(layer[0]), this.renderTile(layer[1])]}
-                </div>
-                <div className="board-row">
-                    {[this.renderTile(layer[2]), this.renderTile(layer[3])]}
-                </div>
-            </div>
-        )
+    renderLayerOne() {
+        const layer = this.state.board.types.slice(1, 5);
+        return this.renderSquareLayer(layer, WIDTH_LEVEL_ONE)
     }
 
-    renderTwo() {
-        return this.renderSquareLayer(this.state.tiles[2], WIDTH_LEVEL_TWO)
+    renderLayerTwo() {
+        const layer = this.state.board.types.slice(5, 21);
+        return this.renderSquareLayer(layer, WIDTH_LEVEL_TWO)
     }
 
-    renderThree() {
-        return this.renderSquareLayer(this.state.tiles[3], WIDTH_LEVEL_THREE);
+    renderLayerThree() {
+        const layer = this.state.board.types.slice(21, 57);
+        return this.renderSquareLayer(layer, WIDTH_LEVEL_THREE);
     }
 
-    renderFour() {
-        let layer: Tile[] = this.state.tiles[4];
-        let rows: Tile[][] = [];
+    renderLayerFour() {
+        let layer = this.state.board.types.slice(57);
+        let rows = [];
         let index = 0;
         rows.push(layer.slice(index, WIDTH_LEVEL_FOUR_A));
         index += WIDTH_LEVEL_FOUR_A;
@@ -97,11 +91,12 @@ class Board extends React.Component {
         rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
         index += WIDTH_LEVEL_FOUR_A;
         rows.push(layer.slice(index)); // unaligned 3 pieces
+
         return (
             <div className="board-layer">
                 {rows.map(row => (
                     <div className="board-row">
-                        {row.map(tile => (this.renderTile(tile)))}
+                        {row.map(tileType => (this.renderTile(tileType)))}
                     </div>
                 ))}
             </div>
@@ -109,7 +104,7 @@ class Board extends React.Component {
     }
 
     // Renders a square shaped layer using a layer's tiles and width
-    renderSquareLayer(layer: Tile[], width: number) {
+    renderSquareLayer(layer: number[], width: number) {
         const numRows = layer.length / width;
         let rows = []
         for (let i = 0; i < numRows; i++) {
@@ -120,7 +115,7 @@ class Board extends React.Component {
             <div className="board-layer">
                 {rows.map(row => (
                     <div className="board-row">
-                        {row.map(tile => (this.renderTile(tile)))}
+                        {row.map(tileType => (this.renderTile(tileType)))}
                     </div>
                 ))}
             </div>
@@ -130,11 +125,11 @@ class Board extends React.Component {
     render() {
         return (
             <div>
-                {this.renderZero()}
-                {this.renderOne()}
-                {this.renderTwo()}
-                {this.renderThree()}
-                {this.renderFour()}
+                {this.renderLayerZero()}
+                {this.renderLayerOne()}
+                {this.renderLayerTwo()}
+                {this.renderLayerThree()}
+                {this.renderLayerFour()}
             </div>
         );
     }
@@ -150,7 +145,7 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board/>
+                    <BoardComponent/>
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>

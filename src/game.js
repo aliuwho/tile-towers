@@ -1,11 +1,10 @@
 import type {Tile} from "./tile";
-import {randInt, shuffleArray} from "./util";
-import {makeBoard, NUM_TILE_TYPES, NUM_TOTAL_TILES} from "./board";
+import type {Board} from "./board";
+import {newBoard} from "./board";
 
 function newGame() {
     // TODO
-    let tiles = makeTiles();
-    let board = makeBoard(tiles);
+    let board = newBoard();
     // setTimeout(0, 12000); // timer for game set to 12m
 }
 
@@ -21,25 +20,10 @@ function pause() {
  * Returns true if there are no moves remaining for a board
  * @param board
  */
-function noMovesRemaining(board: Tile[]): boolean {
-    // TODO
-}
-
-/**
- * Generates tiles for a Tile Towers board.
- * @returns {[]}
- */
-export function makeTiles(): Tile[] {
-    let tiles: Tile[] = [];
-    // Generate matching tiles
-    for (let i = 0; i < Math.floor(NUM_TOTAL_TILES / 2); i++) {
-        const randomType = randInt(NUM_TILE_TYPES)
-        tiles.push({type: randomType, top: null, left: null, right: null});
-        tiles.push({type: randomType, top: null, left: null, right: null});
-    }
-    // Randomize tile distribution
-    tiles = shuffleArray(tiles);
-    return tiles;
+function noMovesRemaining(board: Board): boolean {
+    return board.tiles.reduce((acc, curr) => {
+        return acc && !curr; // check that every tile is false
+    })
 }
 
 /**
@@ -47,5 +31,5 @@ export function makeTiles(): Tile[] {
  * @param board
  */
 function shuffleBoard(board: Tile[][]) {
-
+    // TODO
 }

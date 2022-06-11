@@ -1,245 +1,50 @@
-import type {Tile} from "./tile";
+import {randInt, shuffleArray} from "./util";
 
 const NUM_TILE_TYPES = 36;
 const NUM_TOTAL_TILES = 144;
-const NUM_TILES_LEVEL_FOUR = 87;
-const NUM_TILES_LEVEL_THREE = 36;
-const NUM_TILES_LEVEL_TWO = 16;
-const NUM_TILES_LEVEL_ONE = 4;
-const NUM_TILES_LEVEL_ZERO = 1;
 
 export {
-    NUM_TILES_LEVEL_THREE,
-    NUM_TILES_LEVEL_ONE,
-    NUM_TILES_LEVEL_TWO,
-    NUM_TILES_LEVEL_ZERO,
-    NUM_TILES_LEVEL_FOUR,
     NUM_TOTAL_TILES,
     NUM_TILE_TYPES
 }
+const INIT_NEIGHBORS_LEFT = [-1, -1, 1, -1, 3, -1, 5, 6, 7, -1, 9, 10, 11, -1, 13, 14, 15, -1, 17, 18, 19, -1, 21, 22, 23, 24, 25, -1, 27, 28, 29, 30, 31, -1, 33, 34, 35, 36, 37, -1, 39, 40, 41, 42, 43, -1, 45, 46, 47, 48, 49, -1, 51, 52, 53, 54, 55, 56, -1, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, -1, 70, 71, 72, 73, 74, 75, -1, 77, 78, 79, 80, 81, 82, 83, 84, 85, 141, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 141, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, -1, 111, 112, 113, 114, 115, 116, 117, 118, 119, -1, 121, 122, 123, 124, 125, 126, 127, -1, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, -1, [98, 110], 142];
+const INIT_NEIGHBORS_RIGHT = [-1, 2, -1, 4, 5, 6, 7, 8, -1, 10, 11, 12, -1, 14, 15, 16, -1, 18, 19, 20, -1, 22, 23, 24, 25, 26, -1, 28, 29, 30, 31, 32, -1, 34, 35, 36, 37, 38, -1, 40, 41, 42, 43, 44, -1, 46, 47, 48, 49, 50, -1, 52, 53, 54, 55, 56, -1, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, -1, 70, 71, 72, 73, 74, 75, 76, -1, 78, 79, 80, 81, 82, 83, 84, 85, 86, -1, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 142, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 142, 112, 113, 114, 115, 116, 117, 118, 119, 120, -1, 122, 123, 124, 125, 126, 127, 128, -1, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, -1, [87, 99], 143, -1];
+const INIT_NEIGHBORS_TOP = [-1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 1, 2, -1, -1, 3, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5, 6, 7, 8, -1, -1, 9, 10, 11, 12, -1, -1, 13, 14, 15, 16, -1, -1, 17, 18, 19, 20, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 21, 22, 23, 24, 25, 26, -1, -1, -1, 27, 28, 29, 30, 31, 32, -1, -1, -1, -1, -1, 33, 34, 35, 36, 37, 38, -1, -1, -1, -1, -1, -1, 39, 40, 41, 42, 43, 44, -1, -1, -1, -1, -1, 45, 46, 47, 48, 49, 50, -1, -1, -1, 51, 52, 53, 54, 55, 56, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
 
-// Represents width of rectangle grids on specified layer
-const WIDTH_LEVEL_TWO = 4;
-const WIDTH_LEVEL_THREE = 6;
-const WIDTH_LEVEL_FOUR_A = 12;
-const WIDTH_LEVEL_FOUR_B = 8;
-const WIDTH_LEVEL_FOUR_C = 10;
-
-export {WIDTH_LEVEL_FOUR_C, WIDTH_LEVEL_THREE, WIDTH_LEVEL_TWO, WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_A}
-
-/**
- * Creates a Tile Towers game board.
- */
-export function makeBoard(tiles: Tile[]): Tile[][] {
-    let board: Tile[][] = [];
-    // Construct the board from top to bottom
-    makeLayerZero(tiles, board);
-    makeLayerOne(tiles, board);
-    makeLayerTwo(tiles, board);
-    makeLayerThree(tiles, board);
-    makeLayerFour(tiles, board);
-    return board;
+export interface Board {
+    tiles: boolean[144],
+    types: number[144],
+    top: (number | number[])[144],
+    left: (number | number[])[144],
+    right: (number | number[])[144],
 }
 
 /**
- * Appends tiles to the layer-4 layer. Updates position and above index.
- * @param numTiles
- * @param layer
- * @param tiles
- * @param aboveTiles
- * @param position
- * @param aboveIndex
+ * Creates a new Tile Towers board.
+ * @returns {{types: *, titles: any[]}}
  */
-function appendTilesToFour(numTiles: number, layer: Tile[], tiles: Tile[], aboveTiles: Tile[], position: number,
-                           aboveIndex: number): number {
-    for (let i = 0; i < numTiles; i++) {
-        let tile = tiles.pop();
-        tile.layer = 4;
-        tile.position = i; // Temporary position to properly set neighbors
-        setNeighbors(tile, numTiles, layer[layer.length - 1], tiles[tiles.length - 1],
-            aboveTiles[aboveIndex], aboveIndex);
-        tile.position = position;
-        layer.push(tile);
-        position++;
+export function newBoard(): Board {
+    return {
+        tiles: new Array(144).fill(true),
+        types: generateTypes(),
+        top: INIT_NEIGHBORS_TOP,
+        left: INIT_NEIGHBORS_LEFT,
+        right: INIT_NEIGHBORS_RIGHT,
     }
-    return position;
 }
 
 /**
- *
- * @param tiles
- * @param board
+ * Generates tile types for a Tile Towers board.
+ * @returns {number[]}
  */
-function makeLayerFour(tiles: Tile[], board: Tile[][]): void {
-    // Central 12 x 8 section:
-    let layer: Tile[] = [];
-    const aboveTiles: Tile[] = board[3];
-    let position = 0;
-    let aboveIndex = 0;
-    // Follows pattern A-B-C-A A-C-B-A
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_A, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_B, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_C, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_A, layer, tiles, aboveTiles, position, aboveIndex);
-
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_A, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_C, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_B, layer, tiles, aboveTiles, position, aboveIndex);
-    position = appendTilesToFour(WIDTH_LEVEL_FOUR_A, layer, tiles, aboveTiles, position, aboveIndex);
-
-    // Outside 3 pieces:
-    let tile = tiles.pop();
-    tile.layer = 4;
-    tile.position = position;
-    layer[30].left = tile;
-    layer[42].left = tile;
-    layer.push(tile);
-    position++;
-
-    tile = tiles.pop();
-    tile.layer = 4;
-    tile.position = position;
-    tile.right = tiles[tiles.length - 1];
-    layer[41].right = tile;
-    layer[53].right = tile;
-    layer.push(tile);
-    position++;
-
-    tile = tiles.pop();
-    tile.layer = 4;
-    tile.position = position;
-    tile.left = layer[85];
-    layer.push(tile);
-
-    board.push(layer);
-}
-
-/**
- * Adds layer 3 tiles to board.
- * 6 x 6 board
- * @param tiles
- * @param board
- */
-function makeLayerThree(tiles: Tile[], board: Tile[][]): Tile[][] {
-    let layer: Tile[] = [];
-    const aboveTiles: Tile[] = board[2];
-    let aboveIndex = 0;
-    for (let i = 0; i < NUM_TILES_LEVEL_THREE; i++) {
-        let tile = tiles.pop();
-        tile.layer = 3;
-        tile.position = i;
-        setNeighbors(tile, WIDTH_LEVEL_THREE, layer[layer.length - 1], tiles[tiles.length - 1],
-            aboveTiles[aboveIndex], aboveIndex);
-        layer.push(tile);
-    }
-    board.push(layer);
-}
-
-/**
- * Adds layer 2 tiles to board.
- * 4 x 4 board
- * @param tiles
- * @param board
- */
-function makeLayerTwo(tiles: Tile[], board: Tile[]): void {
-    let layer: Tile[] = [];
-    const aboveTiles: Tile[] = board[1];
-    let aboveIndex = 0;
-    for (let i = 0; i < NUM_TILES_LEVEL_TWO; i++) {
-        let tile = tiles.pop();
-        tile.layer = 2;
-        tile.position = i;
-        setNeighbors(tile, WIDTH_LEVEL_TWO, layer[layer.length - 1], tiles[tiles.length - 1],
-            aboveTiles[aboveIndex], aboveIndex);
-        layer.push(tile);
-    }
-    board.push(layer);
-}
-
-/**
- * Adds layer 3 tiles to board.
- * 2 x 2 board
- * @param tiles
- * @param board
- */
-function makeLayerOne(tiles: Tile[], board: Tile[][]): void {
-    let layer: Tile[] = [];
-    const aboveTile: Tile = board[0][0];
-    for (let i = 0; i < NUM_TILES_LEVEL_ONE; i++) {
-        let tile = tiles.pop();
-        tile.layer = 3;
-        tile.position = i;
-        tile.top = aboveTile;
-        layer.push(tile);
-    }
-    for (let tile of layer) {
-        switch (tile.position) {
-            case 0:
-                tile.right = layer[1];
-                break;
-            case 1:
-                tile.left = layer[0];
-                break;
-            case 2:
-                tile.right = layer[3];
-                break;
-            case 3:
-                tile.left = layer[2];
-                break;
-        }
-    }
-    board.push(layer);
-}
-
-/**
- * Adds layer 4 tile to board.
- * 1 x 1 board
- * @param tiles
- * @param board
- * @returns {Tile[]}
- */
-function makeLayerZero(tiles: Tile[], board: Tile[]): void {
-    let tile = tiles.pop();
-    tile.layer = 4;
-    tile.position = 0;
-    board.push([tile]);
-}
-
-function getTileTypes(board: Tile[][]): number[] {
+function generateTypes(): number[] {
     let types: number[] = [];
-    for (const layer of board) {
-        for (const tile of layer) {
-            types.push(tile.type);
-        }
+    for (let i = 0; i < NUM_TOTAL_TILES / 2; i++) {
+        const randType = randInt(NUM_TILE_TYPES);
+        types.push(randType);
+        types.push(randType);
     }
+    // Randomize tile distribution
+    types = shuffleArray(types);
     return types;
-}
-
-/**
- * Sets a tile's neighbors. Updates above index.
- * @param tile
- * @param rowWidth
- * @param prevTile
- * @param nextTile
- * @param aboveTile
- * @param aboveIndex
- */
-export function setNeighbors(tile: Tile, rowWidth: number, prevTile: Tile, nextTile: Tile, aboveTile: Tile,
-                             aboveIndex: number) {
-    const rowPosition = tile.position % rowWidth;
-    // Update left neighbor
-    if (rowPosition > 0) {
-        tile.left = prevTile;
-    }
-
-    // Update right neighbor
-    if (rowPosition + 1 < rowWidth) {
-        tile.right = nextTile;
-    }
-
-    // Update top neighbor
-    if (rowPosition > 0 && rowPosition + 1 < rowWidth) {
-        tile.top = aboveTile;
-        aboveIndex++;
-    }
 }
