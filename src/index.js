@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {makeBoard, WIDTH_LEVEL_THREE, WIDTH_LEVEL_TWO} from "./board";
+import {
+    makeBoard,
+    WIDTH_LEVEL_FOUR_A,
+    WIDTH_LEVEL_FOUR_B,
+    WIDTH_LEVEL_FOUR_C,
+    WIDTH_LEVEL_THREE,
+    WIDTH_LEVEL_TWO
+} from "./board";
 import {makeTiles} from "./game";
 
 function Tile(props) {
@@ -69,8 +76,40 @@ class Board extends React.Component {
         return this.renderSquareLayer(this.state.tiles[3], WIDTH_LEVEL_THREE);
     }
 
+    renderFour() {
+        let layer: Tile[] = this.state.tiles[4];
+        let rows: Tile[][] = [];
+        let index = 0;
+        rows.push(layer.slice(index, WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B))
+        index += WIDTH_LEVEL_FOUR_B;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
+        index += WIDTH_LEVEL_FOUR_C;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
+        index += WIDTH_LEVEL_FOUR_C;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B));
+        index += WIDTH_LEVEL_FOUR_B;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index)); // unaligned 3 pieces
+        return (
+            <div className="board-layer">
+                {rows.map(row => (
+                    <div className="board-row">
+                        {row.map(tile => (this.renderTile(tile)))}
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
     // Renders a square shaped layer using a layer's tiles and width
-    renderSquareLayer(layer, width) {
+    renderSquareLayer(layer: Tile[], width: number) {
         const numRows = layer.length / width;
         let rows = []
         for (let i = 0; i < numRows; i++) {
@@ -95,9 +134,7 @@ class Board extends React.Component {
                 {this.renderOne()}
                 {this.renderTwo()}
                 {this.renderThree()}
-                <div className="board-row">
-                    {this.state.tiles[4].map(tile => (this.renderTile(tile)))}
-                </div>
+                {this.renderFour()}
             </div>
         );
     }
