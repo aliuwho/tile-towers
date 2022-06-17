@@ -33,6 +33,16 @@ export function newBoard(): Board {
     }
 }
 
+export function copyBoard(oldBoard: Board): Board {
+    return {
+        tiles: oldBoard.tiles.slice(),
+        types: oldBoard.types.slice(),
+        top: oldBoard.top.slice(),
+        left: oldBoard.left.slice(),
+        right: oldBoard.right.slice(),
+    }
+}
+
 /**
  * Generates tile types for a Tile Towers board.
  * @returns {number[]}
