@@ -1,6 +1,6 @@
-import type {Tile} from "./tile";
 import type {Board} from "./board";
 import {newBoard} from "./board";
+import {shuffleArray} from "./util";
 
 function newGame() {
     // TODO
@@ -30,6 +30,23 @@ function noMovesRemaining(board: Board): boolean {
  * Shuffles a board's tiles.
  * @param board
  */
-function shuffleBoard(board: Tile[][]) {
-    // TODO
+function shuffleBoard(board: Board) {
+    board.tiles = shuffleArray(board.tiles);
+}
+
+function checkMatch(board: Board, indexA: number, indexB: number) {
+    return board.types[indexA] === board.types[indexB];
+}
+
+/**
+ * Returns true iff a tile can be played.
+ * @param board
+ * @param index
+ * @returns {boolean}
+ */
+function tilePlayable(board: Board, index: number): boolean {
+    if (!board.tiles[index]) {
+        return false;
+    }
+    return board.top[index] === -1 && (board.left[index] === -1 || board.right[index] === -1);
 }
