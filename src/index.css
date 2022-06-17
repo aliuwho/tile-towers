@@ -7,52 +7,36 @@ ol, ul {
     padding-left: 30px;
 }
 
-.board-layer-0 {
+.board-layer {
     padding: 10px;
-    grid-column: 1/5;
-    grid-row: 1;
-}
-
-.board-layer-1 {
-    padding: 10px;
-    grid-column: 2/5;
-    grid-row: 1;
-}
-
-.board-layer-2 {
-    padding: 10px;
-    grid-column: 3/5;
-    grid-row: 1;
-}
-
-.board-layer-3 {
-    padding: 10px;
-    grid-column: 4/5;
-    grid-row: 1;
-}
-
-.board-layer-4 {
-    padding: 10px;
-    grid-column: 5/5;
-    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /*position: fixed;*/
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 0 25px black);
 }
 
 .status {
     margin-bottom: 10px;
 }
 
+/* TODO dynamic squares */
 .tile {
-    background: #fff;
-    border: 1px solid #999;
-    font-size: 24px;
+    border: 1px solid #000;
+    font-size: 32px;
     font-weight: bold;
-    line-height: 34px;
-    height: 34px;
+    line-height: 50px;
+    width: 50px;
+    height: 50px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
 }
 
 .tile:focus {
@@ -64,10 +48,31 @@ ol, ul {
 }
 
 .game {
-    display: flex;
-    flex-direction: row;
+    /*display: flex;*/
+    /*flex-direction: row;*/
 }
 
 .game-info {
     margin-left: 20px;
+}
+
+
+.board-row {
+    padding: 0;
+}
+
+.board-off-row-1 {
+    position: absolute;
+    left: -2.5%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+}
+
+.board-off-row-2 {
+    position: absolute;
+    right: -26%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
 }
