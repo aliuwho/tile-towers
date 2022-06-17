@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {copyBoard, newBoard} from "./board";
+import {Game} from "./game";
 
 // Represents width of rectangle grids on specified layer
 const WIDTH_LEVEL_ONE = 2;
@@ -80,12 +80,12 @@ class BoardComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            board: newBoard()
+            board: props.board,
         };
     }
 
     handleClick(i) {
-        const board = copyBoard(this.state.board);
+        const board = this.state.board.copyBoard();
         board.tiles[i] = "i was clicked";
         this.setState({
             board: board
@@ -105,7 +105,7 @@ class BoardComponent extends React.Component {
 
     renderLayerZero() {
         return (
-            <div className="board-layer layer-0">
+            <div className="board-layer">
                 <div className="board-row">
                     {this.renderTile(this.state.board.types[0], 0)}
                 </div>
@@ -116,7 +116,7 @@ class BoardComponent extends React.Component {
     renderLayerOne() {
         const layer = this.state.board.types.slice(1, 5);
         return (
-            <div className="board-layer layer-1">
+            <div className="board-layer">
                 {this.renderSquareLayer(layer, WIDTH_LEVEL_ONE)}
             </div>
         )
@@ -125,7 +125,7 @@ class BoardComponent extends React.Component {
     renderLayerTwo() {
         const layer = this.state.board.types.slice(5, 21);
         return (
-            <div className="board-layer layer-2">
+            <div className="board-layer">
                 {this.renderSquareLayer(layer, WIDTH_LEVEL_TWO)}
             </div>
         )
@@ -134,7 +134,7 @@ class BoardComponent extends React.Component {
     renderLayerThree() {
         const layer = this.state.board.types.slice(21, 57);
         return (
-            <div className="board-layer layer-3">
+            <div className="board-layer">
                 {this.renderSquareLayer(layer, WIDTH_LEVEL_THREE)}
             </div>
         )
@@ -215,17 +215,19 @@ class BoardComponent extends React.Component {
     }
 }
 
-class Game extends React.Component {
+class GameComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            game: this.props.game,
+        };
     }
 
     render() {
         return (
-            <div className="game">
+            <div className="game-component">
                 <div className="game-board">
-                    <BoardComponent/>
+                    <BoardComponent board={this.state.game.board}/>
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>
@@ -240,4 +242,4 @@ class Game extends React.Component {
 // ========================================
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Game/>);
+root.render(<GameComponent game={new Game()}/>);

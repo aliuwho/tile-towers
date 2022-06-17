@@ -44,7 +44,7 @@ ol, ul {
     background: #ddd;
 }
 
-.game {
+.game-component {
     /*display: flex;*/
     /*flex-direction: row;*/
 }
