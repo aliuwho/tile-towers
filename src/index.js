@@ -32,14 +32,45 @@ class Tile extends React.Component {
         }
     }
 
+    getShape() {
+        switch (this.state.type % 9) {
+            case 0:
+                return (<circle cx="25" cy="25" r="20" fill="black"/>);
+            case 1:
+                return (<polygon points="25,5 5,45 45,45"
+                                 fill="purple"/>);
+            case 2:
+                return (<rect x="5" y="5" width="40" height="40" fill="green"/>);
+            case 3:
+                return (<circle cx="25" cy="25" r="20" fill="purple"/>);
+            case 4:
+                return (<rect x="5" y="5" width="40" height="40" fill="black"/>);
+            case 5:
+                return (<polygon points="25,5 5,45 45,45"
+                                 fill="purple"/>);
+            case 6:
+                return (<polygon points="25,5
+                30,20 45,20 32,30 37,45
+                25,35
+                12,45 17,30 5,20 20,20"
+                                 fill="green"/>);
+            case 7:
+                return (<polygon points="25,5
+                30,20 45,20 32,30 37,45
+                25,35
+                12,45 17,30 5,20 20,20"
+                                 fill="black"/>);
+            default:
+                return;
+        }
+    }
+
     render() {
+        /* TODO dynamic squares */
         return (
-            // <button className="tile">
-            //     {this.state.type}
-            // </button>
-            <svg className="tile" onClick={this.props.onClick}>
-                <rect x="0" y="0" width="50px" height="50px" fill={this.getColor()}/>
-                <text x="0" y="28">{this.state.type}</text>
+            <svg className="tile" onClick={this.props.onClick} width="50px" height="50px">
+                <rect x="0" y="0" width="51px" height="51px" fill={this.getColor()} stroke="black" stroke-width="1"/>
+                {this.getShape()}
             </svg>
         );
     }
@@ -129,7 +160,7 @@ class BoardComponent extends React.Component {
         index += WIDTH_LEVEL_FOUR_B;
         rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
         index += WIDTH_LEVEL_FOUR_A;
-        let offRow1 = layer.slice(index, index+1); // unaligned 3 pieces
+        let offRow1 = layer.slice(index, index + 1); // unaligned 3 pieces
         index++;
         let offRow2 = layer.slice(index);
 

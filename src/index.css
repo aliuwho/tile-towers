@@ -13,7 +13,6 @@ ol, ul {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /*position: fixed;*/
     position: absolute;
     left: 50%;
     top: 50%;
@@ -25,9 +24,7 @@ ol, ul {
     margin-bottom: 10px;
 }
 
-/* TODO dynamic squares */
 .tile {
-    border: 1px solid #000;
     font-size: 32px;
     font-weight: bold;
     line-height: 50px;
