@@ -15,7 +15,8 @@ class Tile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: props.type
+            type: props.type,
+            selected: false,
         };
     }
 
@@ -67,9 +68,26 @@ class Tile extends React.Component {
 
     render() {
         /* TODO dynamic squares */
+        if (this.state.selected) {
+            return (
+                <svg className="tile-selected"
+                     onClick={() => {
+                         this.setState({selected: false})
+                     }}
+                     width="52px" height="52px">
+                    <rect x="0" y="0" width="50px" height="50px" fill={this.getColor()} stroke="black"
+                          strokeWidth="1px"/>
+                    {this.getShape()}
+                </svg>
+            );
+        }
         return (
-            <svg className="tile" onClick={this.props.onClick} width="50px" height="50px">
-                <rect x="0" y="0" width="51px" height="51px" fill={this.getColor()} stroke="black" stroke-width="1"/>
+            <svg className="tile"
+                 onClick={() => {
+                     this.setState({selected: true})
+                 }}
+                 width="52px" height="52px">
+                <rect x="0" y="0" width="50px" height="50px" fill={this.getColor()} stroke="black" strokeWidth="1px"/>
                 {this.getShape()}
             </svg>
         );
@@ -96,9 +114,7 @@ class BoardComponent extends React.Component {
         return (
             <Tile
                 type={tileType}
-                onClick={() => {
-                    //    do something
-                }}
+                onClick={() => this.props.onClick(tileIndex)}
             />
         );
     }
@@ -223,11 +239,21 @@ class GameComponent extends React.Component {
         };
     }
 
+    handleClick(i) {
+        alert(this.state.game.types[i]);
+        // this.setState({
+        //
+        // });
+    }
+
     render() {
         return (
             <div className="game-component">
                 <div className="game-board">
-                    <BoardComponent board={this.state.game.board}/>
+                    <BoardComponent
+                        board={this.state.game.board}
+                        onClick={i => this.handleClick(i)}
+                    />
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>
