@@ -51,7 +51,7 @@ export class Game {
      * @returns {boolean}
      */
     tilePlayable(tile: number): boolean {
-        if (!this.board.tiles[tile]) {
+        if (this.board.types[tile] === -1) {
             return false;
         }
         return !this.board.hasTopNeighbor(tile) &&
@@ -70,8 +70,8 @@ export class Game {
             // Update board
             this.updateNeighbors(tileA);
             this.updateNeighbors(tileB);
-            this.board.tiles[tileA] = false;
-            this.board.tiles[tileB] = false;
+            this.board.types[tileA] = -1;
+            this.board.types[tileB] = -1;
             this.moves--;
             if (this.moves === 0) {
                 if (this.board.shuffled) {

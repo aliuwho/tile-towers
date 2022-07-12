@@ -14,25 +14,11 @@ export class Board {
 
     constructor(tiles, types: number[], top: number[], left: (number | number[])[],
                 right: (number | number[])[], shuffled: boolean) {
-        this.tiles = tiles;
         this.types = types;
         this.top = top;
         this.left = left;
         this.right = right;
         this.shuffled = shuffled;
-    }
-
-    /**
-     * Returns a deep copy of a board.
-     * @returns {Board}
-     */
-    copyBoard(): Board {
-        return new Board(this.tiles.slice(),
-            this.types.slice(),
-            this.top.slice(),
-            this.left.slice(),
-            this.right.slice(),
-            this.shuffled);
     }
 
     /**
@@ -45,13 +31,13 @@ export class Board {
 
     /**
      * Finds bottom neighbors of a tile
-     * @param tile
      * @returns {[]}
+     * @param targetTile
      */
-    findBottoms(tile: number): number[] {
+    findBottoms(targetTile: number): number[] {
         let bottoms = [];
         this.top.forEach((tile, bottom) => {
-            if (tile === tile) {
+            if (tile === targetTile) {
                 bottoms.push(bottom);
             }
         });
