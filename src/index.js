@@ -5,4 +5,4 @@ import {Game} from "./game";
 
 // ========================================
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Game/>);
+root.render(<Game types={Game.generateTypes()}/>);

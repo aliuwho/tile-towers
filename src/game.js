@@ -12,7 +12,7 @@ export class Game extends React.Component {
         this.state = {
             selected: -1,
             shuffled: false,
-            types: Game.generateTypes(),
+            types: props.types,
             top: INIT_NEIGHBORS_TOP,
             left: INIT_NEIGHBORS_LEFT,
             right: INIT_NEIGHBORS_RIGHT,
