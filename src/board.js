@@ -1,82 +1,154 @@
 import {shuffleArray} from "./util";
+import React from 'react';
+import {Tile} from "./tile";
 
 export const NUM_TILE_TYPES = 36;
 
 // export const NUM_TOTAL_TILES = 144;
 
-export class Board {
+// Represents width of rectangle grids on specified layer
+const WIDTH_LEVEL_ONE = 2;
+const WIDTH_LEVEL_TWO = 4;
+const WIDTH_LEVEL_THREE = 6;
+const WIDTH_LEVEL_FOUR_A = 12;
+const WIDTH_LEVEL_FOUR_B = 8;
+const WIDTH_LEVEL_FOUR_C = 10;
+
+export class Board extends React.Component {
     // private tiles: boolean[144];
     // private types: number[144];
     // private top: number[144];
     // private left: (number | number[])[144];
     // private right: (number | number[])[144];
     // private shuffled: boolean;
-
-    constructor(tiles, types: number[], top: number[], left: (number | number[])[],
-                right: (number | number[])[], shuffled: boolean) {
-        this.types = types;
-        this.top = top;
-        this.left = left;
-        this.right = right;
-        this.shuffled = shuffled;
+    constructor(props) {
+        super(props);
     }
 
-    /**
-     * Returns the number of playable moves for a given board
-     */
-    findMoves(): number {
-        // TODO
-        return 0;
+    renderTile(tileIndex: number) {
+        return (
+            <Tile
+                index={tileIndex}
+                type={this.props.types[tileIndex]}
+                selected={this.props.selected}
+                handler={this.props.handler}
+                left={this.props.left[tileIndex]}
+            />
+        );
     }
 
-    /**
-     * Finds bottom neighbors of a tile
-     * @returns {[]}
-     * @param targetTile
-     */
-    findBottoms(targetTile: number): number[] {
-        let bottoms = [];
-        this.top.forEach((tile, bottom) => {
-            if (tile === targetTile) {
-                bottoms.push(bottom);
-            }
-        });
-        return bottoms;
+    renderLayerZero() {
+        return (
+            <div className="board-layer">
+                <div className="board-row">
+                    {this.renderTile(0)}
+                </div>
+            </div>
+        )
     }
 
-    /**
-     * Generates tile types for a Tile Towers board.
-     * @returns {number[]}
-     */
-    static generateTypes(): number[] {
-        let types: number[] = [];
-        for (let i = 0; i < NUM_TILE_TYPES; i++) {
-            types.push(i, i, i, i);
+    renderLayerOne() {
+        const layer = this.props.types.slice(1, 5);
+        return (
+            <div className="board-layer">
+                {this.renderSquareLayer(layer, WIDTH_LEVEL_ONE, 1)}
+            </div>
+        )
+    }
+
+    renderLayerTwo() {
+        const layer = this.props.types.slice(5, 21);
+        return (
+            <div className="board-layer">
+                {this.renderSquareLayer(layer, WIDTH_LEVEL_TWO, 5)}
+            </div>
+        )
+    }
+
+    renderLayerThree() {
+        const layer = this.props.types.slice(21, 57);
+        return (
+            <div className="board-layer">
+                {this.renderSquareLayer(layer, WIDTH_LEVEL_THREE, 21)}
+            </div>
+        )
+    }
+
+    renderLayerFour() {
+        let layer = this.props.types.slice(57);
+        let rows = [];
+        let index = 0;
+        rows.push(layer.slice(index, WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B))
+        index += WIDTH_LEVEL_FOUR_B;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
+        index += WIDTH_LEVEL_FOUR_C;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
+        index += WIDTH_LEVEL_FOUR_C;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B));
+        index += WIDTH_LEVEL_FOUR_B;
+        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        index += WIDTH_LEVEL_FOUR_A;
+        let offRow1 = layer.slice(index, index + 1); // unaligned 3 pieces
+        index++;
+        let offRow2 = layer.slice(index);
+
+        let offset = 0;
+
+        return (
+            <div className="board-layer">
+                <div className="board-off-row-1">
+                    {this.renderRow(offRow1, 141)}
+                </div>
+                {rows.map(row => {
+                    let ret = <div className="board-row">
+                        {this.renderRow(row, 57 + offset)}
+                    </div>
+                    offset += row.length;
+                    return ret;
+                })}
+                <div className="board-off-row-2">
+                    {this.renderRow(offRow2, 142)}
+                </div>
+            </div>
+        )
+    }
+
+    // Renders a square shaped layer using a layer's tiles and width
+    renderSquareLayer(layer: number[], width: number, indexOffset: number) {
+        const numRows = layer.length / width;
+        let rows = []
+        for (let i = 0; i < numRows; i++) {
+            const start = i * width;
+            rows.push(layer.slice(start, start + width))
         }
-        // Randomize tile distribution
-        types = shuffleArray(types);
-        return types;
+        return (
+            rows.map((row, rowNum) => (
+                <div className="board-row">
+                    {this.renderRow(row, indexOffset + rowNum * width)}
+                </div>
+            ))
+        )
     }
 
-    hasTopNeighbor(tile: number): boolean {
-        return this.top[tile] === -1;
+    renderRow(row, indexOffset) {
+        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset))))
     }
 
-    hasLeftNeighbor(tile: number): boolean {
-        let left = this.left[tile];
-        if (Array.isArray(left)) {
-            return left.length === 0;
-        } else {
-            return left === -1;
-        }
-    }
-
-    hasRightNeighbor(tile: number): boolean {
-        let right = this.right[tile];
-        if (Array.isArray(right)) {
-            return right.length === 0;
-        } else {
-            return right === -1;
-        }
+    render() {
+        return (
+            <div>
+                {this.renderLayerFour()}
+                {this.renderLayerThree()}
+                {this.renderLayerTwo()}
+                {this.renderLayerOne()}
+                {this.renderLayerZero()}
+            </div>
+        );
     }
 }

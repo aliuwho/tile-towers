@@ -3,37 +3,48 @@ import React from 'react';
 export class Tile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            index: props.index,
-            type: props.type,
-            selected: props.selected
-        };
     }
 
     render() {
         /* TODO dynamic squares */
-        if (this.props.selected) {
-            return (
-                <svg className="tile-selected"
-                     width="52px" height="52px">
-                    <rect x="0" y="0" width="50px" height="50px" fill={this.getColor(this.props.type)} stroke="black"
-                          strokeWidth="1px"/>
-                    {this.getShape(this.props.type)}
-                </svg>
-            );
+        if (this.props.selected === this.props.index) {
+            return this.renderSelectedTile();
         }
+        return this.renderUnselectedTile();
+    }
+
+    renderSelectedTile() {
         return (
-            <svg className="tile"
+            <svg className="tile-selected"
                  width="52px" height="52px">
                 <rect x="0" y="0" width="50px" height="50px" fill={this.getColor(this.props.type)} stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
-                {/*<text x="0" y="30" fill="pink">{this.props.index}</text>*/}
+            </svg>);
+    }
+
+    renderUnselectedTile() {
+        return (
+            <svg className="tile"
+                 width="52px" height="52px"
+                 onClick={() => {
+                     this.props.handler(this.props.index);
+                     // this.setState({
+                     //     selected: true
+                     // });
+                 }}>
+                <rect x="0" y="0" width="50px" height="50px" fill={this.getColor(this.props.type)} stroke="black"
+                      strokeWidth="1px"/>
+                {this.getShape(this.props.type)}
+                {/*<text x="0" y="30" fill="pink">{this.props.left}</text>*/}
             </svg>
         );
     }
 
     getColor(tileType) {
+        if (tileType === -1) {
+            return "green";
+        }
         switch (tileType % 4) {
             case 0:
                 return "orangered";
@@ -47,6 +58,9 @@ export class Tile extends React.Component {
     }
 
     getShape(tileType) {
+        if (tileType === -1) {
+            return (<circle cx="25" cy="25" r="20" fill="pink"/>);
+        }
         switch (tileType % 9) {
             case 0:
                 return (<circle cx="25" cy="25" r="20" fill="black"/>);
