@@ -90,8 +90,8 @@ export class Game extends React.Component {
                 alert("tiles match!!!")
                 // Update board
                 let newTypes = this.state.types.slice();
-                newTypes.types[tileA] = -1;
-                newTypes.types[tileB] = -1;
+                newTypes[tileA] = -1;
+                newTypes[tileB] = -1;
                 alert("updated types")
                 this.setState({
                     types: newTypes
@@ -111,7 +111,7 @@ export class Game extends React.Component {
                     }
                 }
             } else {
-                alert("tiles did not match");
+                alert("tiles did not match. typea: " + this.state.types[tileA] + " tybeb:" + this.state.types[tileB]);
             }
         } else {
             alert("tiles are not playable. A: " + this.noTopNeighbor(tileA) + " " + this.noLeftNeighbor(tileA) + " " + this.noRightNeighbor(tileA) +
