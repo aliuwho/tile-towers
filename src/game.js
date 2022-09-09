@@ -46,17 +46,15 @@ export class Game extends React.Component {
     render() {
         return (
             <div className="game-component">
-                <div>
+                <div className="selected-value">
                     <text color="black">{"SELECTED: " + this.state.selected}</text>
                 </div>
-                <div className="game-board">
-                    <Board
-                        types={this.state.types}
-                        handler={this.handler}
-                        selected={this.state.selected}
-                        right={this.state.right}
-                    />
-                </div>
+                <Board
+                    types={this.state.types}
+                    handler={this.handler}
+                    selected={this.state.selected}
+                    right={this.state.right}
+                />
                 <div className="game-info">
                     <div>{/* status */}</div>
                     <ol>{/* TODO */}</ol>

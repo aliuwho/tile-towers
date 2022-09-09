@@ -20,6 +20,7 @@ export class Tile extends React.Component {
     renderInvisTile() {
         return (
             <svg className="tile-invisible"
+                 style={this.props.style}
                  width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}>
             </svg>);
     }
@@ -27,6 +28,7 @@ export class Tile extends React.Component {
     renderSelectedTile() {
         return (
             <svg className="tile-selected"
+                 style={this.props.style}
                  x={0} y={0}
                  width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}
                  onClick={() => {
@@ -49,6 +51,7 @@ export class Tile extends React.Component {
     renderUnselectedTile() {
         return (
             <svg className="tile"
+                 style={this.props.style}
                  width={tileDim + 10 + "px"} height={tileDim + 10 + "px"}
                  x="-20px"
                  onClick={() => {

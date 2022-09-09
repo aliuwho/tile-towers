@@ -24,10 +24,12 @@ export class Board extends React.Component {
     //     super(props);
     // }
 
-    renderTile(tileIndex: number, zIndex: number) {
+    renderTile(tileIndex: number, zIndex: number, leftOffset: number, topOffset: number) {
+        let leftArg = leftOffset + 'px';
+        let topArg = topOffset + 'px';
         return (
             <Tile
-                style={{position: "relative", zIndex: zIndex}}
+                style={{position: 'absolute', left: leftArg, top: topArg}}
                 index={tileIndex}
                 type={this.props.types[tileIndex]}
                 selected={this.props.selected}
@@ -38,7 +40,7 @@ export class Board extends React.Component {
     }
 
     renderLayerZero() {
-        return (this.renderTile(0, 5));
+        return (this.renderTile(0, 5, 20, 20));
     }
 
     renderLayerOne() {
@@ -106,12 +108,14 @@ export class Board extends React.Component {
     }
 
     renderRow(row: number[], indexOffset, zIndex) {
-        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset, zIndex))));
+        let left = Math.random() * 1000;
+        let top = Math.random() * 1000;
+        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset, zIndex, left, top))));
     }
 
     render() {
         return (
-            <div>
+            <div className='board'>
                 {this.renderLayerFourA()}
                 {this.renderLayerFourB()}
                 {this.renderLayerFourC()}
