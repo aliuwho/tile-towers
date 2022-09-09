@@ -1,4 +1,3 @@
-import {shuffleArray} from "./util";
 import React from 'react';
 import {Tile} from "./tile";
 
@@ -21,60 +20,52 @@ export class Board extends React.Component {
     // private left: (number | number[])[144];
     // private right: (number | number[])[144];
     // private shuffled: boolean;
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
-    renderTile(tileIndex: number) {
+    renderTile(tileIndex: number, zIndex: number) {
         return (
             <Tile
+                style={{position: "relative", zIndex: zIndex}}
                 index={tileIndex}
                 type={this.props.types[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
-                left={this.props.left[tileIndex]}
+                right={this.props.right[tileIndex]}
             />
         );
     }
 
     renderLayerZero() {
-        return (
-            <div className="board-layer">
-                <div className="board-row">
-                    {this.renderTile(0)}
-                </div>
-            </div>
-        )
+        return (this.renderTile(0, 5));
     }
 
     renderLayerOne() {
         const layer = this.props.types.slice(1, 5);
-        return (
-            <div className="board-layer">
-                {this.renderSquareLayer(layer, WIDTH_LEVEL_ONE, 1)}
-            </div>
-        )
+        return (this.renderSquareLayer(layer, WIDTH_LEVEL_ONE, 1, 4));
     }
 
     renderLayerTwo() {
         const layer = this.props.types.slice(5, 21);
-        return (
-            <div className="board-layer">
-                {this.renderSquareLayer(layer, WIDTH_LEVEL_TWO, 5)}
-            </div>
-        )
+        return (this.renderSquareLayer(layer, WIDTH_LEVEL_TWO, 5, 3));
     }
 
     renderLayerThree() {
         const layer = this.props.types.slice(21, 57);
-        return (
-            <div className="board-layer">
-                {this.renderSquareLayer(layer, WIDTH_LEVEL_THREE, 21)}
-            </div>
-        )
+        return (this.renderSquareLayer(layer, WIDTH_LEVEL_THREE, 21, 2));
     }
 
-    renderLayerFour() {
+    renderLayerFourA() {
+        return (this.renderRow(this.props.types.slice(84, 85), 141, 1));
+    }
+
+    renderLayerFourC() {
+        return (this.renderRow(this.props.types.slice(85, 87), 142, 1));
+
+    }
+
+    renderLayerFourB() {
         let layer = this.props.types.slice(57);
         let rows = [];
         let index = 0;
@@ -93,57 +84,37 @@ export class Board extends React.Component {
         rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B));
         index += WIDTH_LEVEL_FOUR_B;
         rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
-        index += WIDTH_LEVEL_FOUR_A;
-        let offRow1 = layer.slice(index, index + 1); // unaligned 3 pieces
-        index++;
-        let offRow2 = layer.slice(index);
-
         let offset = 0;
-
-        return (
-            <div className="board-layer">
-                <div className="board-off-row-1">
-                    {this.renderRow(offRow1, 141)}
-                </div>
-                {rows.map(row => {
-                    let ret = <div className="board-row">
-                        {this.renderRow(row, 57 + offset)}
-                    </div>
-                    offset += row.length;
-                    return ret;
-                })}
-                <div className="board-off-row-2">
-                    {this.renderRow(offRow2, 142)}
-                </div>
-            </div>
-        )
+        return (rows.map(row => {
+            let ret = this.renderRow(row, 57 + offset)
+            offset += row.length;
+            return ret;
+        }));
     }
 
     // Renders a square shaped layer using a layer's tiles and width
-    renderSquareLayer(layer: number[], width: number, indexOffset: number) {
+    renderSquareLayer(layer: number[], width: number, indexOffset: number, zIndex: number) {
         const numRows = layer.length / width;
         let rows = []
         for (let i = 0; i < numRows; i++) {
             const start = i * width;
             rows.push(layer.slice(start, start + width))
         }
-        return (
-            rows.map((row, rowNum) => (
-                <div className="board-row">
-                    {this.renderRow(row, indexOffset + rowNum * width)}
-                </div>
-            ))
-        )
+        return (rows.map((row, rowNum) => (
+            this.renderRow(row, indexOffset + rowNum * width, zIndex)
+        )));
     }
 
-    renderRow(row, indexOffset) {
-        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset))))
+    renderRow(row: number[], indexOffset, zIndex) {
+        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset, zIndex))));
     }
 
     render() {
         return (
             <div>
-                {this.renderLayerFour()}
+                {this.renderLayerFourA()}
+                {this.renderLayerFourB()}
+                {this.renderLayerFourC()}
                 {this.renderLayerThree()}
                 {this.renderLayerTwo()}
                 {this.renderLayerOne()}

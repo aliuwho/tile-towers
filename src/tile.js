@@ -1,4 +1,5 @@
 import React from 'react';
+import {tileDim} from "./index";
 
 export class Tile extends React.Component {
     constructor(props) {
@@ -7,17 +8,39 @@ export class Tile extends React.Component {
 
     render() {
         /* TODO dynamic squares */
+        if (this.props.type === -1) {
+            return this.renderInvisTile();
+        }
         if (this.props.selected === this.props.index) {
             return this.renderSelectedTile();
         }
         return this.renderUnselectedTile();
     }
 
+    renderInvisTile() {
+        return (
+            <svg className="tile-invisible"
+                 width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}>
+            </svg>);
+    }
+
     renderSelectedTile() {
         return (
             <svg className="tile-selected"
-                 width="52px" height="52px">
-                <rect x="0" y="0" width="50px" height="50px" fill={this.getColor(this.props.type)} stroke="black"
+                 x={0} y={0}
+                 width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}
+                 onClick={() => {
+                     this.props.handler(this.props.index);
+                     // this.setState({
+                     //     selected: true
+                     // });
+                 }}>
+                <rect x="-5" y="-5" width={tileDim} height={tileDim}
+                      fill="gray" stroke="black"
+                      strokeWidth="1px"/>
+                {this.getShape(this.props.type)}
+                <rect x="0" y="0" width={tileDim} height={tileDim}
+                      fill={this.getColor(this.props.type)} stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
             </svg>);
@@ -26,17 +49,20 @@ export class Tile extends React.Component {
     renderUnselectedTile() {
         return (
             <svg className="tile"
-                 width="52px" height="52px"
+                 width={tileDim + 10 + "px"} height={tileDim + 10 + "px"}
+                 x="-20px"
                  onClick={() => {
                      this.props.handler(this.props.index);
-                     // this.setState({
-                     //     selected: true
-                     // });
                  }}>
-                <rect x="0" y="0" width="50px" height="50px" fill={this.getColor(this.props.type)} stroke="black"
+                <rect x="-5" y="-5" width={tileDim} height={tileDim}
+                      fill="gray" stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
-                {/*<text x="0" y="30" fill="pink">{this.props.left}</text>*/}
+                <rect x="0" y="0" width={tileDim} height={tileDim}
+                      fill={this.getColor(this.props.type)} stroke="black"
+                      strokeWidth="1px"/>
+                {this.getShape(this.props.type)}
+                <text x="0" y="30" fill="pink">{this.props.right}</text>
             </svg>
         );
     }
@@ -75,7 +101,7 @@ export class Tile extends React.Component {
                 return (<rect x="5" y="5" width="40" height="40" fill="black"/>);
             case 5:
                 return (<polygon points="25,5 5,45 45,45"
-                                 fill="purple"/>);
+                                 fill="green"/>);
             case 6:
                 return (<polygon points="25,5
                 30,20 45,20 32,30 37,45
@@ -89,7 +115,8 @@ export class Tile extends React.Component {
                 12,45 17,30 5,20 20,20"
                                  fill="black"/>);
             default:
-                return;
+                return (<polygon points="25,5 5,45 45,45"
+                                 fill="black"/>);
         }
     }
 }

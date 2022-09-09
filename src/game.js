@@ -29,6 +29,10 @@ export class Game extends React.Component {
             this.setState({
                 selected: index
             })
+        } else if (this.state.selected === index) {
+            this.setState({
+                selected: -1
+            })
         } else {
             // TODO play a move using newly selected tile
             this.makeMove(this.state.selected, index);
@@ -50,7 +54,7 @@ export class Game extends React.Component {
                         types={this.state.types}
                         handler={this.handler}
                         selected={this.state.selected}
-                        left={this.state.left}
+                        right={this.state.right}
                     />
                 </div>
                 <div className="game-info">
@@ -87,31 +91,28 @@ export class Game extends React.Component {
     makeMove(tileA: number, tileB: number): void {
         if (this.tilePlayable(tileA) && this.tilePlayable(tileB)) {
             if (this.tilesMatch(tileA, tileB)) {
-                alert("tiles match!!!")
+                // alert("tiles match!!!")
                 // Update board
                 let newTypes = this.state.types.slice();
                 newTypes[tileA] = -1;
                 newTypes[tileB] = -1;
-                alert("updated types")
                 this.setState({
                     types: newTypes
                 });
-                alert("set new state");
-                alert("updated tiles");
                 // TODO this.moves behavior
                 // this.moves--;
-                if (this.findMoves() === 0) {
-                    if (this.state.shuffled) {
-                        // TODO end game
-                    } else {
-                        this.setState({
-                            shuffled: true
-                        })
-                        this.shuffleBoard();
-                    }
-                }
+                // if (this.findMoves() === 0) {
+                //     if (this.state.shuffled) {
+                //         // TODO end game
+                //     } else {
+                //         this.setState({
+                //             shuffled: true
+                //         })
+                //         this.shuffleBoard();
+                //     }
+                // }
             } else {
-                alert("tiles did not match. typea: " + this.state.types[tileA] + " tybeb:" + this.state.types[tileB]);
+                // alert("tiles did not match. typea: " + this.state.types[tileA] + " tybeb:" + this.state.types[tileB]);
             }
         } else {
             alert("tiles are not playable. A: " + this.noTopNeighbor(tileA) + " " + this.noLeftNeighbor(tileA) + " " + this.noRightNeighbor(tileA) +
