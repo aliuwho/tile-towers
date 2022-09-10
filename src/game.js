@@ -73,12 +73,12 @@ export class Game extends React.Component {
 
     /**
      * Returns true iff 2 tiles on a board are the same type.
-     * @param tileA
-     * @param tileB
+     * @param indexA
+     * @param indexB
      * @returns {boolean}
      */
-    tilesMatch(tileA: number, tileB: number): boolean {
-        return this.state.types[tileA] === this.state.types[tileB];
+    tilesMatch(indexA: number, indexB: number): boolean {
+        return this.state.types[indexA] === this.state.types[indexB];
     }
 
     /**
