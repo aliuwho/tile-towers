@@ -3,7 +3,6 @@ import {Tile} from "./tile";
 import {TILE_DIM, WINDOW_HEIGHT, WINDOW_WIDTH} from "./util";
 
 export const NUM_TILE_TYPES = 36;
-export const NUM_TILES = 144;
 
 // Represents width of rectangle grids on specified layer
 const WIDTH_LEVEL_ONE = 2;
@@ -41,7 +40,7 @@ export class Board extends React.Component {
                 type={this.props.types[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
-                right={this.props.types[tileIndex]}
+                right={tileIndex}
             />
         );
     }
