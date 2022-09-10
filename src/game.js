@@ -124,15 +124,15 @@ export class Game extends React.Component {
      * Returns true iff there exists a move for a given board
      */
     canPlay(): boolean {
-        this.props.types.forEach((tileType, tileIndex) => {
-            if (this.tilePlayable(tileIndex)) {
-                for (let i = 0; i < this.props.types.length; i++ ){
-                    if (i !== tileIndex && this.tilePlayable(i) && this.tilesMatch(tileIndex, i)) {
+        for (let i = 0; i < NUM_TILES; i++) {
+            if (this.tilePlayable(i)) {
+                for (let j = 0; j < NUM_TILES; j++) {
+                    if (j !== i && this.tilePlayable(j) && this.tilesMatch(i, j)) {
                         return true;
                     }
                 }
             }
-        })
+        }
         return false;
     }
 

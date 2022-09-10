@@ -3,8 +3,7 @@ import {Tile} from "./tile";
 import {TILE_DIM, WINDOW_HEIGHT, WINDOW_WIDTH} from "./util";
 
 export const NUM_TILE_TYPES = 36;
-
-// export const NUM_TOTAL_TILES = 144;
+export const NUM_TILES = 144;
 
 // Represents width of rectangle grids on specified layer
 const WIDTH_LEVEL_ONE = 2;
