@@ -143,24 +143,24 @@ export class Game extends React.Component {
 
     /**
      * Returns true iff a tile can be played.
-     * @param tile
+     * @param tileIndex
      * @returns {boolean}
      */
-    tilePlayable(tile: number): boolean {
-        if (this.state.types[tile] === -1) {
+    tilePlayable(tileIndex: number): boolean {
+        if (this.state.types[tileIndex] === -1) {
             return false;
         }
-        return this.noTopNeighbor(tile) &&
-            (this.noLeftNeighbor(tile) || this.noRightNeighbor(tile));
+        return this.noTopNeighbor(tileIndex) &&
+            (this.noLeftNeighbor(tileIndex) || this.noRightNeighbor(tileIndex));
     }
 
     /**
      * Returns true if tile does not have a top neighbor
-     * @param tile
+     * @param tileIndex
      * @returns {boolean}
      */
-    noTopNeighbor(tile: number): boolean {
-        let topNeighbor = this.state.top[tile];
+    noTopNeighbor(tileIndex: number): boolean {
+        let topNeighbor = this.state.top[tileIndex];
         if (topNeighbor === -1) {
             // No top tile exists
             return true;
@@ -171,11 +171,11 @@ export class Game extends React.Component {
 
     /**
      * Returns true if tile has no left neighbor
-     * @param tile
+     * @param tileIndex
      * @returns {boolean}
      */
-    noLeftNeighbor(tile: number): boolean {
-        let leftNeighbor = this.state.left[tile];
+    noLeftNeighbor(tileIndex: number): boolean {
+        let leftNeighbor = this.state.left[tileIndex];
         if (Array.isArray(leftNeighbor)) {
             return this.state.types[leftNeighbor[0]] === -1 &&
                 this.state.types[leftNeighbor[1]] === -1;
@@ -191,11 +191,11 @@ export class Game extends React.Component {
 
     /**
      * Returns true if tile has no right neighbor
-     * @param tile
+     * @param tileIndex
      * @returns {boolean}
      */
-    noRightNeighbor(tile: number): boolean {
-        let rightNeighbor = this.state.right[tile];
+    noRightNeighbor(tileIndex: number): boolean {
+        let rightNeighbor = this.state.right[tileIndex];
         if (Array.isArray(rightNeighbor)) {
             return this.state.types[rightNeighbor[0]] === -1 &&
                 this.state.types[rightNeighbor[1]] === -1;
