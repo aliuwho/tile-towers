@@ -1,5 +1,5 @@
 import React from 'react';
-import {tileDim} from "./index";
+import {TILE_DIM} from "./util";
 
 export class Tile extends React.Component {
     constructor(props) {
@@ -7,7 +7,7 @@ export class Tile extends React.Component {
     }
 
     render() {
-        /* TODO dynamic squares */
+        /* TODO add dynamic shading / 3d qualities so its easy to tell diff tiles */
         if (this.props.type === -1) {
             return this.renderInvisTile();
         }
@@ -21,7 +21,7 @@ export class Tile extends React.Component {
         return (
             <svg className="tile-invisible"
                  style={this.props.style}
-                 width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}>
+                 width={TILE_DIM + 2 + "px"} height={TILE_DIM + 2 + "px"}>
             </svg>);
     }
 
@@ -30,18 +30,18 @@ export class Tile extends React.Component {
             <svg className="tile-selected"
                  style={this.props.style}
                  x={0} y={0}
-                 width={tileDim + 2 + "px"} height={tileDim + 2 + "px"}
+                 width={TILE_DIM + 2 + "px"} height={TILE_DIM + 2 + "px"}
                  onClick={() => {
                      this.props.handler(this.props.index);
                      // this.setState({
                      //     selected: true
                      // });
                  }}>
-                <rect x="-5" y="-5" width={tileDim} height={tileDim}
+                <rect x="-5" y="-5" width={TILE_DIM} height={TILE_DIM}
                       fill="gray" stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
-                <rect x="0" y="0" width={tileDim} height={tileDim}
+                <rect x="0" y="0" width={TILE_DIM} height={TILE_DIM}
                       fill={this.getColor(this.props.type)} stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
@@ -52,16 +52,16 @@ export class Tile extends React.Component {
         return (
             <svg className="tile"
                  style={this.props.style}
-                 width={tileDim + 10 + "px"} height={tileDim + 10 + "px"}
+                 width={TILE_DIM + 10 + "px"} height={TILE_DIM + 10 + "px"}
                  x="-20px"
                  onClick={() => {
                      this.props.handler(this.props.index);
                  }}>
-                <rect x="-5" y="-5" width={tileDim} height={tileDim}
+                <rect x="-5" y="-5" width={TILE_DIM} height={TILE_DIM}
                       fill="gray" stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
-                <rect x="0" y="0" width={tileDim} height={tileDim}
+                <rect x="0" y="0" width={TILE_DIM} height={TILE_DIM}
                       fill={this.getColor(this.props.type)} stroke="black"
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
@@ -71,6 +71,7 @@ export class Tile extends React.Component {
     }
 
     getColor(tileType) {
+        return "white";
         if (tileType === -1) {
             return "green";
         }
@@ -87,6 +88,7 @@ export class Tile extends React.Component {
     }
 
     getShape(tileType) {
+        return(null);
         if (tileType === -1) {
             return (<circle cx="25" cy="25" r="20" fill="pink"/>);
         }

@@ -29,8 +29,5 @@ export default function useWindowDimensions() {
 // ========================================
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const initTypes = Game.generateTypes();
-let minDim = Math.min(window.innerWidth, window.innerHeight)
-export const tileDim = Math.max(minDim / 15, 25);
 
-root.render(<Game types={initTypes}
-                  tileDim={tileDim}/>);
+root.render(<Game types={initTypes}/>);

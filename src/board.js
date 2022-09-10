@@ -1,5 +1,6 @@
 import React from 'react';
 import {Tile} from "./tile";
+import {TILE_DIM, WINDOW_HEIGHT, WINDOW_WIDTH} from "./util";
 
 export const NUM_TILE_TYPES = 36;
 
@@ -12,6 +13,13 @@ const WIDTH_LEVEL_THREE = 6;
 const WIDTH_LEVEL_FOUR_A = 12;
 const WIDTH_LEVEL_FOUR_B = 8;
 const WIDTH_LEVEL_FOUR_C = 10;
+
+const LEVEL_FOUR_WIDTHS = [WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_C,
+    WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_C,
+    WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_A]
+
+const CENTER_X = WINDOW_WIDTH * 0.75 / 2;
+const CENTER_Y = WINDOW_HEIGHT * 0.75 / 2 - TILE_DIM;
 
 export class Board extends React.Component {
     // private tiles: boolean[144];
@@ -34,83 +42,81 @@ export class Board extends React.Component {
                 type={this.props.types[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
-                right={this.props.right[tileIndex]}
+                right={this.props.types[tileIndex]}
             />
         );
     }
 
     renderLayerZero() {
-        return (this.renderTile(0, 5, 20, 20));
+        return this.renderTile(0, 5, CENTER_X, CENTER_Y);
     }
 
     renderLayerOne() {
-        const layer = this.props.types.slice(1, 5);
-        return (this.renderSquareLayer(layer, WIDTH_LEVEL_ONE, 1, 4));
+        return this.renderSquareLayer(WIDTH_LEVEL_ONE, 1, 4,
+            CENTER_X - TILE_DIM / 2,
+            CENTER_Y - TILE_DIM / 2);
     }
 
     renderLayerTwo() {
-        const layer = this.props.types.slice(5, 21);
-        return (this.renderSquareLayer(layer, WIDTH_LEVEL_TWO, 5, 3));
+        return (this.renderSquareLayer(WIDTH_LEVEL_TWO, 5, 3,
+            CENTER_X - TILE_DIM / 2 * 3,
+            CENTER_Y - TILE_DIM / 2 * 3));
     }
 
     renderLayerThree() {
-        const layer = this.props.types.slice(21, 57);
-        return (this.renderSquareLayer(layer, WIDTH_LEVEL_THREE, 21, 2));
+        return this.renderSquareLayer(WIDTH_LEVEL_THREE, 21, 2,
+            CENTER_X - TILE_DIM / 2 * 5,
+            CENTER_Y - TILE_DIM / 2 * 5);
     }
 
     renderLayerFourA() {
-        return (this.renderRow(this.props.types.slice(84, 85), 141, 1));
+        return this.renderTile(141, 1,
+            CENTER_X - TILE_DIM / 2 * 13,
+            CENTER_Y);
     }
 
     renderLayerFourC() {
-        return (this.renderRow(this.props.types.slice(85, 87), 142, 1));
-
+        let left = CENTER_X + TILE_DIM / 2 * 13;
+        let top = CENTER_Y;
+        return [this.renderTile(142, 1, left, top),
+            this.renderTile(143, 1, left + TILE_DIM, top)];
     }
 
     renderLayerFourB() {
-        let layer = this.props.types.slice(57);
-        let rows = [];
-        let index = 0;
-        rows.push(layer.slice(index, WIDTH_LEVEL_FOUR_A));
-        index += WIDTH_LEVEL_FOUR_A;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B))
-        index += WIDTH_LEVEL_FOUR_B;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
-        index += WIDTH_LEVEL_FOUR_C;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
-        index += WIDTH_LEVEL_FOUR_A;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
-        index += WIDTH_LEVEL_FOUR_A;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_C));
-        index += WIDTH_LEVEL_FOUR_C;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_B));
-        index += WIDTH_LEVEL_FOUR_B;
-        rows.push(layer.slice(index, index + WIDTH_LEVEL_FOUR_A));
+        let layer = [];
         let offset = 0;
-        return (rows.map(row => {
-            let ret = this.renderRow(row, 57 + offset)
-            offset += row.length;
-            return ret;
+        let startY = CENTER_Y - TILE_DIM / 2 * 7
+        LEVEL_FOUR_WIDTHS.forEach(((width, rowNum) => {
+            layer.push(this.renderRow(width,
+                57 + offset,
+                1,
+                CENTER_X + TILE_DIM / 2 - (TILE_DIM * width / 2),
+                startY + TILE_DIM * rowNum))
+            offset += width;
         }));
+        return layer;
     }
 
     // Renders a square shaped layer using a layer's tiles and width
-    renderSquareLayer(layer: number[], width: number, indexOffset: number, zIndex: number) {
-        const numRows = layer.length / width;
-        let rows = []
-        for (let i = 0; i < numRows; i++) {
-            const start = i * width;
-            rows.push(layer.slice(start, start + width))
+    renderSquareLayer(widthLength: number, startIndex: number, zIndex: number, left: number, top: number) {
+        let layer = []
+        for (let i = 0; i < widthLength; i++) {
+            let row = this.renderRow(widthLength, startIndex, zIndex, left, top + TILE_DIM * i);
+            layer.push(row)
         }
-        return (rows.map((row, rowNum) => (
-            this.renderRow(row, indexOffset + rowNum * width, zIndex)
-        )));
+        return layer;
     }
 
-    renderRow(row: number[], indexOffset, zIndex) {
-        let left = Math.random() * 1000;
-        let top = Math.random() * 1000;
-        return (row.map((tileType, tileIndex) => (this.renderTile(tileIndex + indexOffset, zIndex, left, top))));
+    renderRow(numTiles: number, startIndex: number, zIndex: number, left: number, top: number) {
+        let tiles = []
+        for (let i = 0; i < numTiles; i++) {
+            let tile = this.renderTile(startIndex + i,
+                zIndex,
+                left + TILE_DIM * i,
+                top);
+            tiles.push(tile);
+        }
+        return tiles;
     }
 
     render() {

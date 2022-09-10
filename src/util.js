@@ -19,3 +19,7 @@ export function shuffleArray(array: any[]): any[] {
     }
     return array;
 }
+
+export const TILE_DIM = Math.max(Math.min(window.innerWidth, window.innerHeight) / 15, 25);
+export const WINDOW_WIDTH = window.innerWidth;
+export const WINDOW_HEIGHT = window.innerHeight

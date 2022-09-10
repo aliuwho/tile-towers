@@ -9,7 +9,6 @@ ol, ul {
 
 .board {
     position:absolute;
-    filter: drop-shadow(-5px 5px 0px black);
 }
 
 .status {
