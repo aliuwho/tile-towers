@@ -16,8 +16,8 @@ const LEVEL_FOUR_WIDTHS = [WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_F
     WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_C,
     WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_A]
 
-const CENTER_X = WINDOW_WIDTH * 0.75 / 2;
-const CENTER_Y = WINDOW_HEIGHT * 0.75 / 2 - TILE_DIM;
+const CENTER_X = WINDOW_WIDTH / 2 - TILE_DIM;
+const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 3 / 2;
 
 export class Board extends React.Component {
     // private tiles: boolean[144];
@@ -46,7 +46,9 @@ export class Board extends React.Component {
     }
 
     renderLayerZero() {
-        return this.renderTile(0, 5, CENTER_X, CENTER_Y);
+        return this.renderTile(0, 5,
+            CENTER_X + TILE_DIM / 6,
+            CENTER_Y - TILE_DIM / 6);
     }
 
     renderLayerOne() {
@@ -76,8 +78,8 @@ export class Board extends React.Component {
     renderLayerFourC() {
         let left = CENTER_X + TILE_DIM / 2 * 13;
         let top = CENTER_Y;
-        return [this.renderTile(142, 1, left, top),
-            this.renderTile(143, 1, left + TILE_DIM, top)];
+        return [this.renderTile(143, 1, left + TILE_DIM, top),
+            this.renderTile(142, 1, left, top)];
     }
 
     renderLayerFourB() {
@@ -108,9 +110,9 @@ export class Board extends React.Component {
     renderRow(numTiles: number, startIndex: number, zIndex: number, left: number, top: number) {
         let tiles = []
         for (let i = 0; i < numTiles; i++) {
-            let tile = this.renderTile(startIndex + i,
+            let tile = this.renderTile(startIndex + numTiles - i,
                 zIndex,
-                left + TILE_DIM * i,
+                left + TILE_DIM * (numTiles - i - 1),
                 top);
             tiles.push(tile);
         }
@@ -120,9 +122,9 @@ export class Board extends React.Component {
     render() {
         return (
             <div className='board'>
-                {this.renderLayerFourA()}
-                {this.renderLayerFourB()}
                 {this.renderLayerFourC()}
+                {this.renderLayerFourB()}
+                {this.renderLayerFourA()}
                 {this.renderLayerThree()}
                 {this.renderLayerTwo()}
                 {this.renderLayerOne()}
