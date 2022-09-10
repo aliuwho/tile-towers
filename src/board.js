@@ -101,7 +101,7 @@ export class Board extends React.Component {
     renderSquareLayer(widthLength: number, startIndex: number, zIndex: number, left: number, top: number) {
         let layer = []
         for (let i = 0; i < widthLength; i++) {
-            let row = this.renderRow(widthLength, startIndex, zIndex, left, top + TILE_DIM * i);
+            let row = this.renderRow(widthLength, startIndex + widthLength * i, zIndex, left, top + TILE_DIM * i);
             layer.push(row)
         }
         return layer;
