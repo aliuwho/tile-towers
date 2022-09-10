@@ -133,7 +133,7 @@ export class Game extends React.Component {
                 this.shuffleBoard();
             }
         }
-        console.log(this.hint()) // TODO repeats most recent move when move was successful... weird
+        console.log(this.hint()) // note: setState is usually too slow when a move is successfully made
         return false;
     }
 
