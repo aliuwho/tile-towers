@@ -1,6 +1,20 @@
 import React from 'react';
 import {TILE_DIM} from "./util";
 
+// NOTE: palette is colorblind friendly :)
+const Color = {
+    RED: "rgb(238,102,119)",
+    YELLOW: "rgb(204,187,68)",
+    GREEN: "rgb(34,136,51)",
+    WHITE: "rgb(255,255,255",
+    BLACK: "rgb(0,0,0)",
+    BLUE: "rgb(68,119,170)",
+    PURPLE: "rgb(170,51,119)",
+    CYAN: "rgb(102,204,238)",
+    GREY: "rgb(187,187,187)"
+}
+
+
 export class Tile extends React.Component {
     constructor(props) {
         super(props);
@@ -38,11 +52,11 @@ export class Tile extends React.Component {
                      // });
                  }}>
                 <rect x="-5" y="-5" width={TILE_DIM} height={TILE_DIM}
-                      fill="gray" stroke="black"
+                      fill={Color.GREY} stroke={Color.BLACK}
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
                 <rect x="0" y="0" width={TILE_DIM} height={TILE_DIM}
-                      fill={this.getColor(this.props.type)} stroke="black"
+                      fill={this.getColor(this.props.type)} stroke={Color.BLACK}
                       strokeWidth="1px"/>
                 {this.getShape(this.props.type)}
             </svg>);
@@ -58,70 +72,77 @@ export class Tile extends React.Component {
                      this.props.handler(this.props.index);
                  }}>
                 <rect x="-5" y="-5" width={TILE_DIM} height={TILE_DIM}
-                      fill="gray" stroke="black"
+                      fill={Color.GREY} stroke={Color.BLACK}
                       strokeWidth="1px"/>
-                {this.getShape(this.props.type)}
+                {this.getShape()}
                 <rect x="0" y="0" width={TILE_DIM} height={TILE_DIM}
-                      fill={this.getColor(this.props.type)} stroke="black"
+                      fill={this.getColor()} stroke={Color.BLACK}
                       strokeWidth="1px"/>
-                {this.getShape(this.props.type)}
-                <text x="0" y="30" fill="pink">{this.props.right}</text>
+                {this.getShape()}
+                <text x="0" y="30" fill={Color.GREY}>{this.props.right}</text>
             </svg>
         );
     }
 
-    getColor(tileType) {
-        return "white";
-        if (tileType === -1) {
-            return "green";
+    getColor() {
+        if (this.props.type === -1) {
+            return Color.GREEN;
         }
-        switch (tileType % 4) {
+        switch (this.props.type % 4) {
             case 0:
-                return "orangered";
+                return Color.RED;
             case 1:
-                return "goldenrod";
+                return Color.YELLOW;
             case 2:
-                return "white";
+                return Color.WHITE;
             default:
-                return "steelblue";
+                return Color.BLUE;
         }
     }
 
-    getShape(tileType) {
-        return(null);
-        if (tileType === -1) {
-            return (<circle cx="25" cy="25" r="20" fill="pink"/>);
+    renderCircle(color: Color) {
+        return <circle cx="25" cy="25" r="20" fill={color}/>;
+    }
+
+    renderTriangle(color: Color) {
+        return <polygon points="25,5 5,45 45,45" fill={color}/>;
+    }
+
+    renderRectangle(color: Color) {
+        return <rect x="9" y="9" width="30" height="30" fill={color}/>;
+    }
+
+    renderStar(color: Color) {
+        return <polygon points="25,5
+                30,20 45,20 32,30 37,45
+                25,35
+                12,45 17,30 5,20 20,20"
+                        fill={color}/>
+    }
+
+    getShape() {
+        if (this.props.type === -1) {
+            return this.renderCircle(Color.CYAN);
         }
-        switch (tileType % 9) {
+        switch (this.props.type % 9) {
             case 0:
-                return (<circle cx="25" cy="25" r="20" fill="black"/>);
+                return this.renderCircle(Color.BLACK);
             case 1:
-                return (<polygon points="25,5 5,45 45,45"
-                                 fill="purple"/>);
+                return this.renderTriangle(Color.PURPLE);
             case 2:
-                return (<rect x="5" y="5" width="40" height="40" fill="green"/>);
+                return this.renderRectangle(Color.CYAN);
             case 3:
-                return (<circle cx="25" cy="25" r="20" fill="purple"/>);
+                return this.renderCircle(Color.PURPLE);
             case 4:
-                return (<rect x="5" y="5" width="40" height="40" fill="black"/>);
+                return this.renderRectangle(Color.BLACK);
             case 5:
-                return (<polygon points="25,5 5,45 45,45"
-                                 fill="green"/>);
+                return this.renderTriangle(Color.GREEN);
             case 6:
-                return (<polygon points="25,5
-                30,20 45,20 32,30 37,45
-                25,35
-                12,45 17,30 5,20 20,20"
-                                 fill="green"/>);
+                return this.renderStar(Color.GREEN);
             case 7:
-                return (<polygon points="25,5
-                30,20 45,20 32,30 37,45
-                25,35
-                12,45 17,30 5,20 20,20"
-                                 fill="black"/>);
+                return this.renderStar(Color.CYAN);
             default:
-                return (<polygon points="25,5 5,45 45,45"
-                                 fill="black"/>);
+                return this.renderTriangle(Color.BLACK);
         }
     }
 }
