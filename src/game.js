@@ -49,7 +49,8 @@ export class Game extends React.Component {
         return (
             <div className="game-component">
                 {/*<div className="game-info">*/}
-                <Header selected={this.state.selected}/>
+                <Header selected={this.state.selected}
+                canPlay={this.canPlay()}/>
                 <div>{/* status */}</div>
                 <ol>{/* TODO */}</ol>
                 {/*</div>*/}
@@ -120,11 +121,19 @@ export class Game extends React.Component {
     }
 
     /**
-     * Returns the number of playable moves for a given board
+     * Returns true iff there exists a move for a given board
      */
-    findMoves(): number {
-        // TODO
-        return 0;
+    canPlay(): boolean {
+        this.props.types.forEach((tileType, tileIndex) => {
+            if (this.tilePlayable(tileIndex)) {
+                for (let i = 0; i < this.props.types.length; i++ ){
+                    if (i !== tileIndex && this.tilePlayable(i) && this.tilesMatch(tileIndex, i)) {
+                        return true;
+                    }
+                }
+            }
+        })
+        return false;
     }
 
     /**

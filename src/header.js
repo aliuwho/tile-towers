@@ -11,6 +11,7 @@ export default class Header extends React.Component {
                     <button type={'reset'}>New Game</button>
                 </span>
                 <text color="black">{"SELECTED: " + this.props.selected}</text>
+                <text color={"black"}>{"CAN PLAY: " + this.props.canPlay}</text>
             </div>
         )
     }
