@@ -17,9 +17,6 @@ const Color = {
 const TILE_WIDLEN = TILE_DIM * 12 / 10;
 
 export class Tile extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         /* TODO add dynamic shading / 3d qualities so its easy to tell diff tiles */
@@ -77,7 +74,7 @@ export class Tile extends React.Component {
                        onClick={() => {
                            this.props.handler(this.props.index);
                        }}/>
-                <text x={TILE_WIDLEN/2} y={TILE_WIDLEN/2} fill={Color.RED}>{this.props.right}</text>
+                <text x={TILE_WIDLEN / 2} y={TILE_WIDLEN / 2} fill={Color.RED}>{this.props.right}</text>
             </svg>
         );
     }
