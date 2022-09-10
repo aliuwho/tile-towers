@@ -23,7 +23,7 @@ export class Tile extends React.Component {
     render() {
         /* TODO add dynamic shading / 3d qualities so its easy to tell diff tiles */
         if (this.props.type === -1) {
-            return this.renderInvisTile();
+            return this.renderInvisibleTile();
         }
         if (this.props.selected === this.props.index) {
             return this.renderSelectedTile();
@@ -31,7 +31,7 @@ export class Tile extends React.Component {
         return this.renderUnselectedTile();
     }
 
-    renderInvisTile() {
+    renderInvisibleTile() {
         return (
             <svg className="tile-invisible"
                  style={this.props.style}

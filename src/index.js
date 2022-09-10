@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import {Game} from "./game";
 
+// TODO make hook for dimensions
 function getWindowDimensions() {
     const {innerWidth: width, innerHeight: height} = window;
     return {

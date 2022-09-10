@@ -17,7 +17,8 @@ export class Game extends React.Component {
             left: INIT_NEIGHBORS_LEFT,
             right: INIT_NEIGHBORS_RIGHT,
             // moves: gameBoard.findMoves(),
-            // setTimeout(0, 12000); // timer for game set to 12m
+            // setTimeout(0, 12000); // timer for game set to 12m // TODO make timer optional
+            // TODO Menu with diff modes?
         };
 
         this.handler = this.handler.bind(this);

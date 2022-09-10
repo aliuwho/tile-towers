@@ -15,6 +15,10 @@ ol, ul {
     margin-bottom: 10px;
 }
 
+.tile {
+    transition: 250ms;
+}
+
 .tile-selected {
     filter: drop-shadow(0 0 5px yellow) brightness(150%);
 }
@@ -22,7 +26,6 @@ ol, ul {
 .tile-invisible {
     visibility: hidden;
     pointer-events: none;
-    z-index: -10;
 }
 
 /*.kbd-navigation .tile:focus {*/
