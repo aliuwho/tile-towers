@@ -57,7 +57,7 @@ export class Game extends React.Component {
                     <button type={'reset'} disabled={true}>New Game</button>
                     <button disabled={true}>Hint</button>
                 </span>
-                <text color="black">{"SELECTED: " + this.state.selected}</text>
+                {/*<text color="black">{"SELECTED: " + this.state.selected}</text>*/}
                 <text color="black">{"REMAINING: " + this.state.tilesRemaining}</text>
             </div>
         )
