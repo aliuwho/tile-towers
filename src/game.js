@@ -107,15 +107,14 @@ export class Game extends React.Component {
         if (this.tilePlayable(tileA) && this.tilePlayable(tileB)) {
             if (this.tilesMatch(tileA, tileB)) {
                 // Update board
-                this.setState((state) => {
-                    let newTypes = state.types.slice();
-                    newTypes[tileA] = -1;
-                    newTypes[tileB] = -1;
-                    return {
-                        types: newTypes,
-                        tilesRemaining: state.tilesRemaining - 1 // TODO for some reason this double updates
-                    }
-                });
+                let newTypes = this.state.types.slice();
+                newTypes[tileA] = -1;
+                newTypes[tileB] = -1;
+
+                this.setState({
+                    types: newTypes,
+                    tilesRemaining: this.state.tilesRemaining - 2
+                })
             } else {
                 console.log("Tiles did not match.");
             }
