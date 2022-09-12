@@ -258,4 +258,8 @@ export class Game extends React.Component {
             types: shuffleArray(this.state.types.slice())
         })
     }
+
+    getTypes() {
+        return this.state.types;
+    }
 }
