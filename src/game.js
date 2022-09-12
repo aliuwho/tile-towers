@@ -58,7 +58,7 @@ export class Game extends React.Component {
                     <button>Hint</button>
                 </span>
                 <text color="black">{"SELECTED: " + this.state.selected}</text>
-                <text color="black">{"REMAINING: " + this.state.remaining}</text>
+                <text color="black">{"REMAINING: " + this.state.tilesRemaining}</text>
             </div>
         )
     }
