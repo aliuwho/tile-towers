@@ -17,7 +17,9 @@ const LEVEL_FOUR_WIDTHS = [WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_F
     WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_A]
 
 const CENTER_X = WINDOW_WIDTH / 2 - TILE_DIM;
-const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 3 / 2;
+const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 2;
+
+const ALIGN_OFFSET = TILE_DIM / 6;
 
 export class Board extends React.Component {
     // private tiles: boolean[144];
@@ -47,8 +49,8 @@ export class Board extends React.Component {
 
     renderLayerZero() {
         return this.renderTile(0, 5,
-            CENTER_X + TILE_DIM / 6,
-            CENTER_Y - TILE_DIM / 6);
+            CENTER_X + ALIGN_OFFSET,
+            CENTER_Y - ALIGN_OFFSET);
     }
 
     renderLayerOne() {
@@ -59,25 +61,25 @@ export class Board extends React.Component {
 
     renderLayerTwo() {
         return (this.renderSquareLayer(WIDTH_LEVEL_TWO, 5, 3,
-            CENTER_X - TILE_DIM / 2 * 3,
-            CENTER_Y - TILE_DIM / 2 * 3));
+            CENTER_X - TILE_DIM / 2 * 3 - ALIGN_OFFSET,
+            CENTER_Y - TILE_DIM / 2 * 3 + ALIGN_OFFSET));
     }
 
     renderLayerThree() {
         return this.renderSquareLayer(WIDTH_LEVEL_THREE, 21, 2,
-            CENTER_X - TILE_DIM / 2 * 5,
-            CENTER_Y - TILE_DIM / 2 * 5);
+            CENTER_X - TILE_DIM / 2 * 5 - ALIGN_OFFSET * 2,
+            CENTER_Y - TILE_DIM / 2 * 5 + ALIGN_OFFSET * 2);
     }
 
     renderLayerFourA() {
         return this.renderTile(141, 1,
-            CENTER_X - TILE_DIM / 2 * 13,
-            CENTER_Y);
+            CENTER_X - TILE_DIM / 2 * 13 - ALIGN_OFFSET * 3,
+            CENTER_Y + ALIGN_OFFSET * 3);
     }
 
     renderLayerFourC() {
-        let left = CENTER_X + TILE_DIM / 2 * 13;
-        let top = CENTER_Y;
+        let left = CENTER_X + TILE_DIM / 2 * 13 - ALIGN_OFFSET * 3;
+        let top = CENTER_Y + ALIGN_OFFSET * 3;
         return [this.renderTile(143, 1, left + TILE_DIM, top),
             this.renderTile(142, 1, left, top)];
     }
@@ -85,12 +87,12 @@ export class Board extends React.Component {
     renderLayerFourB() {
         let layer = [];
         let offset = 0;
-        let startY = CENTER_Y - TILE_DIM / 2 * 7
+        let startY = CENTER_Y - TILE_DIM / 2 * 7 + ALIGN_OFFSET * 3
         LEVEL_FOUR_WIDTHS.forEach(((width, rowNum) => {
             layer.push(this.renderRow(width,
                 57 + offset,
                 1,
-                CENTER_X + TILE_DIM / 2 - (TILE_DIM * width / 2),
+                CENTER_X + TILE_DIM / 2 - (TILE_DIM * width / 2) - ALIGN_OFFSET * 3,
                 startY + TILE_DIM * rowNum))
             offset += width;
         }));
