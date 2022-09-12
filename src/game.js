@@ -100,7 +100,7 @@ export class Game extends React.Component {
                     newTypes[tileB] = -1;
                     return {
                         types: newTypes,
-                        tilesRemaining: state.tilesRemaining - 2
+                        tilesRemaining: state.tilesRemaining - 1 // TODO for some reason this double updates
                     }
                 });
             } else {
@@ -114,6 +114,7 @@ export class Game extends React.Component {
     /**
      * Checks if the game is over.
      */
+    // TODO this function does not appear to be called after each move? or delayed update?
     isGameOver(): boolean {
         // Check if player successfully cleared all tiles
         if (this.state.tilesRemaining === 0) {
@@ -252,6 +253,7 @@ export class Game extends React.Component {
     /**
      * Shuffles the board's tiles.
      */
+    // TODO does not maintain position tiles were in before shuffle
     shuffleBoard(): void {
         this.setState({
             types: shuffleArray(this.state.types.slice())
