@@ -52,10 +52,10 @@ export class Game extends React.Component {
             <div className='header'>
                 {/*<span className='score'>{`SCORE: ${this.props.score}`}</span>*/}
                 <span className='menu-buttons'>
-                    <button>Pause</button>
                     <button onClick={() => this.shuffleBoard()}>Shuffle Tiles</button>
-                    <button type={'reset'}>New Game</button>
-                    <button>Hint</button>
+                    <button disabled={true}>Pause</button>
+                    <button type={'reset'} disabled={true}>New Game</button>
+                    <button disabled={true}>Hint</button>
                 </span>
                 <text color="black">{"SELECTED: " + this.state.selected}</text>
                 <text color="black">{"REMAINING: " + this.state.tilesRemaining}</text>
