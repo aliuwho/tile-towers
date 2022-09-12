@@ -52,7 +52,8 @@ export class Game extends React.Component {
         return (
             <div className="game-component">
                 {/*<div className="game-info">*/}
-                <Header selected={this.state.selected}/>
+                <Header selected={this.state.selected}
+                        remaining={this.state.tilesRemaining}/>
                 <div>{/* status */}</div>
                 <ol>{/* TODO */}</ol>
                 {/*</div>*/}
