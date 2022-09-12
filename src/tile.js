@@ -2,7 +2,7 @@ import React from 'react';
 import {TILE_DIM} from "./util";
 
 // NOTE: palette is colorblind friendly :)
-const Color = {
+const COLOR = {
     RED: "rgb(238,102,119)",
     YELLOW: "rgb(204,187,68)",
     GREEN: "rgb(34,136,51)",
@@ -81,17 +81,17 @@ export class Tile extends React.Component {
 
     getColor() {
         if (this.props.type === -1) {
-            return Color.GREEN;
+            return COLOR.GREEN;
         }
         switch (this.props.type % 4) {
             case 0:
-                return Color.RED;
+                return COLOR.RED;
             case 1:
-                return Color.YELLOW;
+                return COLOR.YELLOW;
             case 2:
-                return Color.WHITE;
+                return COLOR.WHITE;
             default:
-                return Color.BLUE;
+                return COLOR.BLUE;
         }
     }
 }
