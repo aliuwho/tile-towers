@@ -112,7 +112,7 @@ export class Board extends React.Component {
     renderRow(numTiles: number, startIndex: number, zIndex: number, left: number, top: number) {
         let tiles = []
         for (let i = 0; i < numTiles; i++) {
-            let tile = this.renderTile(startIndex + numTiles - i,
+            let tile = this.renderTile(startIndex + numTiles - i - 1,
                 zIndex,
                 left + TILE_DIM * (numTiles - i - 1),
                 top);
