@@ -252,7 +252,6 @@ export class Game extends React.Component {
     /**
      * Shuffles the board's tiles.
      */
-    // TODO does not maintain position tiles were in before shuffle
     shuffleBoard(): void {
         let currTypes = this.state.types.slice().filter(type => type !== -1)
         currTypes = shuffleArray(currTypes);
