@@ -47,12 +47,26 @@ export class Game extends React.Component {
         }
     }
 
+    renderHeader() {
+        return (
+            <div className='header'>
+                {/*<span className='score'>{`SCORE: ${this.props.score}`}</span>*/}
+                <span className='menu-buttons'>
+                    <button>Pause</button>
+                    <button onClick={() => this.shuffleBoard()}>Shuffle Tiles</button>
+                    <button type={'reset'}>New Game</button>
+                    <button>Hint</button>
+                </span>
+                <text color="black">{"SELECTED: " + this.state.selected}</text>
+                <text color="black">{"REMAINING: " + this.state.remaining}</text>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="game-component">
-                {/*<div className="game-info">*/}
-                <Header selected={this.state.selected}
-                        remaining={this.state.tilesRemaining}/>
+                {this.renderHeader()}
                 <div>{/* status */}</div>
                 <ol>{/* TODO */}</ol>
                 {/*</div>*/}
