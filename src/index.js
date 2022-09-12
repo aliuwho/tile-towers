@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {Game} from "./game";
+import {generateTypes} from "./util";
 
 // TODO make hook for dimensions
 function getWindowDimensions() {
@@ -29,6 +30,6 @@ export default function useWindowDimensions() {
 
 // ========================================
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const initTypes = Game.generateTypes();
+const initTypes = generateTypes();
 
 root.render(<Game types={initTypes}/>);
