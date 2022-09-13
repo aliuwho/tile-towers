@@ -1,6 +1,5 @@
 import React from 'react';
 import {Tile} from "./tile";
-import {TILE_DIM, WINDOW_HEIGHT, WINDOW_WIDTH} from "./util";
 
 export const NUM_TILE_TYPES = 36;
 
@@ -15,11 +14,6 @@ const WIDTH_LEVEL_FOUR_C = 10;
 const LEVEL_FOUR_WIDTHS = [WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_C,
     WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_A, WIDTH_LEVEL_FOUR_C,
     WIDTH_LEVEL_FOUR_B, WIDTH_LEVEL_FOUR_A]
-
-const CENTER_X = WINDOW_WIDTH / 2 - TILE_DIM;
-const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 2;
-
-const ALIGN_OFFSET = TILE_DIM / 6;
 
 export class BoardComponent extends React.Component {
     // private tiles: number[144];
@@ -42,57 +36,61 @@ export class BoardComponent extends React.Component {
                 selected={this.props.selected}
                 handler={this.props.handler}
                 right={this.props.right[tileIndex]}
+                renderDim={this.props.renderDim}
             />
         );
     }
 
     renderLayerZero() {
         return this.renderTile(0, 5,
-            CENTER_X + ALIGN_OFFSET,
-            CENTER_Y - ALIGN_OFFSET);
+            this.props.centerX + this.props.alignOffset,
+            this.props.centerY - this.props.alignOffset);
     }
 
     renderLayerOne() {
         return this.renderSquareLayer(WIDTH_LEVEL_ONE, 1, 4,
-            CENTER_X - TILE_DIM / 2,
-            CENTER_Y - TILE_DIM / 2);
+            this.props.centerX - this.props.renderDim / 2,
+            this.props.centerY - this.props.renderDim / 2);
     }
 
     renderLayerTwo() {
         return (this.renderSquareLayer(WIDTH_LEVEL_TWO, 5, 3,
-            CENTER_X - TILE_DIM / 2 * 3 - ALIGN_OFFSET,
-            CENTER_Y - TILE_DIM / 2 * 3 + ALIGN_OFFSET));
+            this.props.centerX - this.props.renderDim / 2 * 3 - this.props.alignOffset,
+            this.props.centerY - this.props.renderDim / 2 * 3 + this.props.alignOffset));
     }
 
     renderLayerThree() {
         return this.renderSquareLayer(WIDTH_LEVEL_THREE, 21, 2,
-            CENTER_X - TILE_DIM / 2 * 5 - ALIGN_OFFSET * 2,
-            CENTER_Y - TILE_DIM / 2 * 5 + ALIGN_OFFSET * 2);
+            this.props.centerX - this.props.renderDim / 2 * 5 - this.props.alignOffset * 2,
+            this.props.centerY - this.props.renderDim / 2 * 5 + this.props.alignOffset * 2);
     }
 
     renderLayerFourA() {
+        console.log(this.props.centerX)
+        console.log(this.props);
         return this.renderTile(141, 1,
-            CENTER_X - TILE_DIM / 2 * 13 - ALIGN_OFFSET * 3,
-            CENTER_Y + ALIGN_OFFSET * 3);
+            this.props.centerX - this.props.renderDim / 2 * 13 - this.props.alignOffset * 3,
+            this.props.centerY + this.props.alignOffset * 3);
+
     }
 
     renderLayerFourC() {
-        let left = CENTER_X + TILE_DIM / 2 * 13 - ALIGN_OFFSET * 3;
-        let top = CENTER_Y + ALIGN_OFFSET * 3;
-        return [this.renderTile(143, 1, left + TILE_DIM, top),
+        let left = this.props.centerX + this.props.renderDim / 2 * 13 - this.props.alignOffset * 3;
+        let top = this.props.centerY + this.props.alignOffset * 3;
+        return [this.renderTile(143, 1, left + this.props.renderDim, top),
             this.renderTile(142, 1, left, top)];
     }
 
     renderLayerFourB() {
         let layer = [];
         let offset = 0;
-        let startY = CENTER_Y - TILE_DIM / 2 * 7 + ALIGN_OFFSET * 3
+        let startY = this.props.centerY - this.props.renderDim / 2 * 7 + this.props.alignOffset * 3
         LEVEL_FOUR_WIDTHS.forEach(((width, rowNum) => {
             layer.push(this.renderRow(width,
                 57 + offset,
                 1,
-                CENTER_X + TILE_DIM / 2 - (TILE_DIM * width / 2) - ALIGN_OFFSET * 3,
-                startY + TILE_DIM * rowNum))
+                this.props.centerX + this.props.renderDim / 2 - (this.props.renderDim * width / 2) - this.props.alignOffset * 3,
+                startY + this.props.renderDim * rowNum))
             offset += width;
         }));
         return layer;
@@ -102,7 +100,7 @@ export class BoardComponent extends React.Component {
     renderSquareLayer(widthLength: number, startIndex: number, zIndex: number, left: number, top: number) {
         let layer = []
         for (let i = 0; i < widthLength; i++) {
-            let row = this.renderRow(widthLength, startIndex + widthLength * i, zIndex, left, top + TILE_DIM * i);
+            let row = this.renderRow(widthLength, startIndex + widthLength * i, zIndex, left, top + this.props.renderDim * i);
             layer.push(row)
         }
         return layer;
@@ -113,7 +111,7 @@ export class BoardComponent extends React.Component {
         for (let i = 0; i < numTiles; i++) {
             let tile = this.renderTile(startIndex + numTiles - i - 1,
                 zIndex,
-                left + TILE_DIM * (numTiles - i - 1),
+                left + this.props.renderDim * (numTiles - i - 1),
                 top);
             tiles.push(tile);
         }

@@ -11,13 +11,40 @@ export class Game extends React.Component {
             shuffled: false,
             board: new Board(),
             tilesRemaining: Board.NUM_TILES,
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
             // setTimeout(0, 12000); // timer for game set to 12m // TODO make timer optional
             // TODO Menu with diff modes?
         };
-
         this.handler = this.handler.bind(this);
+        this.handleResize = this.handleResize.bind(this);
     }
 
+    /**
+     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
+     */
+    componentDidMount() {
+        window.addEventListener("resize", this.handleResize);
+    }
+
+    /**
+     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
+     */
+    componentWillUnmount() {
+        window.addEventListener("resize", null);
+    }
+
+    /**
+     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
+     * @param WindowSize
+     * @param event
+     */
+    handleResize(WindowSize, event) {
+        this.setState({
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
+        })
+    }
 
     handler(index) {
         if (this.state.selected === -1) {
@@ -59,6 +86,7 @@ export class Game extends React.Component {
     }
 
     render() {
+        const renderDim = Math.min(this.state.windowWidth, this.state.windowHeight) / 12;
         return (
             <div className="game-component">
                 {this.renderHeader()}
@@ -69,7 +97,11 @@ export class Game extends React.Component {
                     tiles={this.state.board.getTiles()}
                     handler={this.handler}
                     selected={this.state.selected}
-                    right={Board.NEIGHBORS_LEFT}
+                    right={Board.NEIGHBORS_RIGHT}
+                    renderDim={renderDim}
+                    centerX={this.state.windowWidth / 2 - renderDim}
+                    centerY={this.state.windowHeight / 2 - renderDim * 2}
+                    alignOffset={renderDim / 6}
                 />
             </div>
         );
@@ -130,10 +162,6 @@ export class Game extends React.Component {
                 })
             }
         }
-        this.setState({
-            shuffled: shuffled,
-            board: newBoard
-        })
 
         console.log(newBoard.findMove()) // TODO remove and make into hint button
     }

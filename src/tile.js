@@ -1,5 +1,4 @@
 import React from 'react';
-import {TILE_DIM} from "./util";
 
 // NOTE: palette is colorblind friendly :)
 const COLOR = {
@@ -33,9 +32,14 @@ const IMAGES = [require('./images/tile-01.png'), require('./images/tile-02.png')
     require('./images/tile-33.png'), require('./images/tile-34.png'),
     require('./images/tile-35.png'), require('./images/tile-36.png'),];
 
-const TILE_WIDLEN = TILE_DIM * 12 / 10;
-
 export class Tile extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            tileDim: this.props.renderDim * 12 / 10
+        }
+    }
 
     render() {
         /* TODO add dynamic shading / 3d qualities so its easy to tell diff tiles */
@@ -51,8 +55,8 @@ export class Tile extends React.Component {
     renderInvisibleTile() {
         return (
             <svg className="tile-invisible"
-                 width={TILE_WIDLEN + "px"}
-                 height={TILE_WIDLEN + "px"}>
+                 width={this.state.tileDim + "px"}
+                 height={this.state.tileDim + "px"}>
             </svg>);
     }
 
@@ -61,18 +65,18 @@ export class Tile extends React.Component {
             <svg className={className}
                  key={this.props.index}
                  style={this.props.style}
-                 width={TILE_WIDLEN + "px"}
-                 height={TILE_WIDLEN + "px"}
+                 width={this.state.tileDim + "px"}
+                 height={this.state.tileDim + "px"}
                  onClick={() => {
                      this.props.handler(this.props.index);
                  }}>
                 <image className={this.props.index + this.props.type}
                        href={IMAGES[this.props.type]}
                        style={this.props.style}
-                       width={TILE_WIDLEN + "px"}
-                       height={TILE_WIDLEN + "px"}
+                       width={this.state.tileDim + "px"}
+                       height={this.state.tileDim + "px"}
                 />
-                {/*<text x={TILE_WIDLEN / 4} y={TILE_WIDLEN / 2} fill={COLOR.WHITE}>{this.props.right}</text>*/}
+                <text x={this.state.tileDim / 4} y={this.state.tileDim / 2} fill={COLOR.WHITE}>{this.props.right}</text>
             </svg>
         );
     }
