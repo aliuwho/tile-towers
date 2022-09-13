@@ -42,7 +42,7 @@ export class Board extends React.Component {
                 type={this.props.types[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
-                right={tileIndex}
+                right={this.props.right[tileIndex]}
             />
         );
     }

@@ -74,7 +74,7 @@ export class Game extends React.Component {
                     types={this.state.types}
                     handler={this.handler}
                     selected={this.state.selected}
-                    right={this.state.right}
+                    right={this.state.top}
                 />
             </div>
         );
@@ -119,7 +119,12 @@ export class Game extends React.Component {
                 console.log("Tiles did not match.");
             }
         } else {
-            console.log("Not playable.");
+            if (this.tilePlayable(tileA)) {
+                console.log(tileA + "was not playable.");
+            }
+            if (this.tilePlayable(tileB)) {
+                console.log(tileB + "was not playable.");
+            }
         }
     }
 
@@ -130,11 +135,12 @@ export class Game extends React.Component {
     isGameOver(): boolean {
         // Check if player successfully cleared all tiles
         if (this.state.tilesRemaining === 0) {
-            alert("Congratulations! You win!")
+            alert("Congratulations! You win!") // TODO broken
             return true;
         }
 
         // Check if game ends prematurely
+        // TODO this is running twice
         if (!this.canPlay()) {
             if (this.state.shuffled) {
                 // TODO end game
@@ -147,7 +153,7 @@ export class Game extends React.Component {
                 this.shuffleBoard();
             }
         }
-        console.log(this.hint()) // note: setState is usually too slow when a move is successfully made
+        console.log(this.hint())
         return false;
     }
 
