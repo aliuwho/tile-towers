@@ -123,6 +123,11 @@ export class Game extends React.Component {
                 alert("No moves! Shuffling...")
                 newBoard.shuffleTiles();
                 shuffled = true;
+                this.setState({
+                    shuffled: shuffled,
+                    board: newBoard,
+                    selected: -1
+                })
             }
         }
         this.setState({
