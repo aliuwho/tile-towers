@@ -5,7 +5,7 @@ import {sleep} from "./util";
 
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
-const RENDER_DIM = WINDOW_HEIGHT / 20;
+const RENDER_DIM = WINDOW_HEIGHT / 14;
 
 export class Game extends React.Component {
     constructor(props) {
@@ -73,8 +73,8 @@ export class Game extends React.Component {
                     selected={this.state.selected}
                     right={Board.NEIGHBORS_RIGHT}
                     renderDim={RENDER_DIM}
-                    centerX={(WINDOW_WIDTH - 4 * RENDER_DIM) / 2 - RENDER_DIM / 2}
-                    centerY={(WINDOW_HEIGHT - 4 * RENDER_DIM) / 2 - RENDER_DIM / 2}
+                    centerX={(WINDOW_WIDTH - 4 * RENDER_DIM) / 2}
+                    centerY={(WINDOW_HEIGHT - 3 * RENDER_DIM) / 2}
                     alignOffset={RENDER_DIM / 6}
                 />
             </div>

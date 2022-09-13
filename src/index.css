@@ -1,6 +1,10 @@
 body {
+    background: beige;
+    width: 800px;
+    height: 600px;
     font: 14px "Century Gothic", Futura, sans-serif;
     overflow: scroll;
+    border: 2px solid black;
 }
 
 ol, ul {
@@ -9,11 +13,8 @@ ol, ul {
 
 .board {
     position: absolute;
-    padding: 20%
-}
-
-.status {
-    margin-bottom: 10px;
+    left: 5%;
+    top: 5%;
 }
 
 .tile {
@@ -29,15 +30,6 @@ ol, ul {
     pointer-events: none;
 }
 
-/*.kbd-navigation .tile:focus {*/
-/*    background: #ddd;*/
-/*}*/
-
 .game-component {
-    /*display: flex;*/
-    /*flex-direction: row;*/
-}
-
-.header {
-    margin:5%
+    margin: 5%;
 }
