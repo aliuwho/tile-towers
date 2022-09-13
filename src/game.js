@@ -17,33 +17,6 @@ export class Game extends React.Component {
             // TODO Menu with diff modes?
         };
         this.handler = this.handler.bind(this);
-        this.handleResize = this.handleResize.bind(this);
-    }
-
-    /**
-     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
-     */
-    componentDidMount() {
-        window.addEventListener("resize", this.handleResize);
-    }
-
-    /**
-     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
-     */
-    componentWillUnmount() {
-        window.addEventListener("resize", null);
-    }
-
-    /**
-     * https://stackoverflow.com/questions/45644457/action-on-window-resize-in-react
-     * @param WindowSize
-     * @param event
-     */
-    handleResize(WindowSize, event) {
-        this.setState({
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight
-        })
     }
 
     handler(index) {
@@ -99,8 +72,8 @@ export class Game extends React.Component {
                     selected={this.state.selected}
                     right={Board.NEIGHBORS_RIGHT}
                     renderDim={renderDim}
-                    centerX={this.state.windowWidth / 2 - renderDim}
-                    centerY={this.state.windowHeight / 2 - renderDim * 2}
+                    centerX={(this.state.windowWidth - 4 * renderDim) / 2 - renderDim / 2}
+                    centerY={(this.state.windowHeight - 4 * renderDim) / 2 - renderDim / 2}
                     alignOffset={renderDim / 6}
                 />
             </div>
