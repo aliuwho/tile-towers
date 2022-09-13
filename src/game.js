@@ -69,7 +69,7 @@ export class Game extends React.Component {
                     tiles={this.state.board.getTiles()}
                     handler={this.handler}
                     selected={this.state.selected}
-                    right={this.state.board.getTiles()}
+                    right={Board.NEIGHBORS_LEFT}
                 />
             </div>
         );
