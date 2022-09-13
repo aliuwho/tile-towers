@@ -1,5 +1,3 @@
-import {NUM_TILE_TYPES} from "./boardComponent";
-
 /**
  * Returns a random integer in the range 0...val (inclusive)
  */
@@ -20,20 +18,6 @@ export function shuffleArray(array: any[]): any[] {
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
-}
-
-/**
- * Generates tile types for a Tile Towers board.
- * @returns {number[]}
- */
-export function generateTypes(): number[] {
-    let types: number[] = [];
-    for (let i = 0; i < NUM_TILE_TYPES; i++) {
-        types.push(i, i, i, i);
-    }
-    // Randomize tile distribution
-    types = shuffleArray(types);
-    return types;
 }
 
 export const TILE_DIM = Math.max(Math.min(window.innerWidth, window.innerHeight) / 12, 25);

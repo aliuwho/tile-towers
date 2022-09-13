@@ -74,7 +74,7 @@ export class Tile extends React.Component {
                        onClick={() => {
                            this.props.handler(this.props.index);
                        }}/>
-                <text x={TILE_WIDLEN / 2} y={TILE_WIDLEN / 2} fill={COLOR.WHITE}>{this.props.right}</text>
+                {/*<text x={TILE_WIDLEN / 2} y={TILE_WIDLEN / 2} fill={COLOR.WHITE}>{this.props.right}</text>*/}
             </svg>
         );
     }

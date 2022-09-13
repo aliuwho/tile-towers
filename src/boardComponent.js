@@ -22,8 +22,7 @@ const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 2;
 const ALIGN_OFFSET = TILE_DIM / 6;
 
 export class BoardComponent extends React.Component {
-    // private tiles: boolean[144];
-    // private types: number[144];
+    // private tiles: number[144];
     // private top: number[144];
     // private left: (number | number[])[144];
     // private right: (number | number[])[144];
@@ -39,7 +38,7 @@ export class BoardComponent extends React.Component {
             <Tile
                 style={{position: 'absolute', left: leftArg, top: topArg}}
                 index={tileIndex}
-                type={this.props.types[tileIndex]}
+                type={this.props.tiles[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
                 right={this.props.right[tileIndex]}
