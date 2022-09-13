@@ -263,6 +263,9 @@ export class Game extends React.Component {
         this.setState({
             types: newTypes,
         })
+        if (!this.canPlay()) {
+            this.shuffleBoard();
+        }
     }
 
     getTypes() {
