@@ -76,24 +76,8 @@ export class Tile extends React.Component {
                        width={this.state.tileDim + "px"}
                        height={this.state.tileDim + "px"}
                 />
-                <text x={this.state.tileDim / 4} y={this.state.tileDim / 2} fill={COLOR.WHITE}>{this.props.right}</text>
+                {/*<text x={this.state.tileDim / 4} y={this.state.tileDim / 2} fill={COLOR.WHITE}>{this.props.right}</text>*/}
             </svg>
         );
-    }
-
-    getColor() {
-        if (this.props.type === -1) {
-            return COLOR.GREEN;
-        }
-        switch (this.props.type % 4) {
-            case 0:
-                return COLOR.RED;
-            case 1:
-                return COLOR.YELLOW;
-            case 2:
-                return COLOR.WHITE;
-            default:
-                return COLOR.BLUE;
-        }
     }
 }
