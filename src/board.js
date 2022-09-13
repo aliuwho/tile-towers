@@ -1,6 +1,12 @@
 import {shuffleArray} from "./util";
 import {NUM_TILE_TYPES} from "./boardComponent";
 
+const NEIGHBOR_TYPE = {
+    TOP: 'top',
+    RIGHT: 'right',
+    LEFT: 'left'
+}
+
 export default class Board {
     // Map neighbor positions
     static NEIGHBORS_LEFT = [-1, -1, 1, -1, 3, -1, 5, 6, 7, -1, 9, 10, 11, -1, 13, 14, 15, -1, 17, 18, 19, -1, 21, 22, 23, 24, 25, -1, 27, 28, 29, 30, 31, -1, 33, 34, 35, 36, 37, -1, 39, 40, 41, 42, 43, -1, 45, 46, 47, 48, 49, -1, 51, 52, 53, 54, 55, -1, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, -1, 69, 70, 71, 72, 73, 74, 75, -1, 77, 78, 79, 80, 81, 82, 83, 84, 85, 141, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 141, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, -1, 111, 112, 113, 114, 115, 116, 117, 118, 119, -1, 121, 122, 123, 124, 125, 126, 127, -1, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, -1, [98, 110], 142];
@@ -50,63 +56,55 @@ export default class Board {
         if (this.tiles[tileIndex] === -1) {
             return false;
         }
-        return this.noTopNeighbor(tileIndex) &&
-            (this.noLeftNeighbor(tileIndex) || this.noRightNeighbor(tileIndex));
+        return this.neighborsGone(NEIGHBOR_TYPE.TOP, tileIndex) &&
+            (this.neighborsGone(NEIGHBOR_TYPE.LEFT, tileIndex) || this.neighborsGone(NEIGHBOR_TYPE.RIGHT, tileIndex));
     }
 
     /**
-     * Returns true if tile does not have a top neighbor
+     * Returns -1 if there is no neighbor, and returns the indices of left neighbor(s) otherwise.
+     * @param neighborType
      * @param tileIndex
-     * @returns {boolean}
+     * @returns {boolean|number}
      */
-    noTopNeighbor(tileIndex: number): boolean {
-        let topNeighbor = Board.NEIGHBORS_TOP[tileIndex];
-        if (topNeighbor === -1) {
-            // No top tile exists
-            return true;
+    getNeighbors(neighborType: string, tileIndex: number): number | number[] {
+        let neighborMap;
+        switch (neighborType) {
+            case NEIGHBOR_TYPE.LEFT:
+                neighborMap = Board.NEIGHBORS_LEFT;
+                break;
+            case NEIGHBOR_TYPE.RIGHT:
+                neighborMap = Board.NEIGHBORS_RIGHT;
+                break;
+            default:
+                neighborMap = Board.NEIGHBORS_TOP;
+                break;
         }
-        // Returns true if existing above tile has been removed
-        return this.tiles[topNeighbor] === -1;
+        let indices = neighborMap[tileIndex];
+        if (!Array.isArray(indices) && indices === -1) {
+            return -1;
+        }
+        if (Array.isArray(indices)) {
+            return indices;
+        }
+        return [indices];
     }
 
     /**
      * Returns true if tile has no left neighbor
+     * @param neighborType
      * @param tileIndex
      * @returns {boolean}
      */
-    noLeftNeighbor(tileIndex: number): boolean {
-        let leftNeighbor = Board.NEIGHBORS_LEFT[tileIndex];
-        if (Array.isArray(leftNeighbor)) {
-            return this.tiles[leftNeighbor[0]] === -1 &&
-                this.tiles[leftNeighbor[1]] === -1;
-        } else {
-            if (leftNeighbor === -1) {
-                // No left tile exists
-                return true;
-            }
-            // Returns true if existing left tile has been removed
-            return this.tiles[leftNeighbor] === -1;
+    neighborsGone(neighborType: string, tileIndex: number): boolean {
+        let neighbors = this.getNeighbors(neighborType, tileIndex);
+        if (!Array.isArray(neighbors)) {
+            return true;
         }
-    }
-
-    /**
-     * Returns true if tile has no right neighbor
-     * @param tileIndex
-     * @returns {boolean}
-     */
-    noRightNeighbor(tileIndex: number): boolean {
-        let rightNeighbor = Board.NEIGHBORS_RIGHT[tileIndex];
-        if (Array.isArray(rightNeighbor)) {
-            return this.tiles[rightNeighbor[0]] === -1 &&
-                this.tiles[rightNeighbor[1]] === -1;
-        } else {
-            if (rightNeighbor === -1) {
-                // No right tile exists
-                return true;
-            }
-            // Returns true if existing right tile has been removed
-            return this.tiles[rightNeighbor] === -1;
-        }
+        let ret = true;
+        neighbors.forEach((neighbor) => {
+            ret = ret && this.tiles[neighbor] === -1;
+        });
+        return ret;
     }
 
     /**
@@ -125,14 +123,19 @@ export default class Board {
             } else {
                 console.log("Tiles did not match.");
             }
-        } else {
-            if (this.tilePlayable(tileA)) {
-                console.log(tileA + "was not playable.");
-            }
-            if (this.tilePlayable(tileB)) {
-                console.log(tileB + "was not playable.");
-            }
         }
+        // if (!this.tilePlayable(tileA)) {
+        //     console.log(tileA + " was not playable.");
+        //     for (let nType of Object.values(NEIGHBOR_TYPE)) {
+        //         console.log(nType + this.getNeighbors(nType, tileA));
+        //     }
+        // }
+        // if (!this.tilePlayable(tileB)) {
+        //     console.log(tileB + " was not playable.");
+        //     for (let nType of Object.values(NEIGHBOR_TYPE)) {
+        //         console.log(nType + this.getNeighbors(nType, tileB));
+        //     }
+        // }
         return false;
     }
 
