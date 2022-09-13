@@ -3,6 +3,10 @@ import React from 'react';
 import Board from "./board";
 import {sleep} from "./util";
 
+const WINDOW_WIDTH = 800;
+const WINDOW_HEIGHT = 600;
+const RENDER_DIM = WINDOW_HEIGHT / 20;
+
 export class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -11,8 +15,6 @@ export class Game extends React.Component {
             shuffled: false,
             board: new Board(),
             tilesRemaining: Board.NUM_TILES,
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight
             // setTimeout(0, 12000); // timer for game set to 12m // TODO make timer optional
             // TODO Menu with diff modes?
         };
@@ -59,7 +61,6 @@ export class Game extends React.Component {
     }
 
     render() {
-        const renderDim = Math.min(this.state.windowWidth, this.state.windowHeight) / 12;
         return (
             <div className="game-component">
                 {this.renderHeader()}
@@ -71,10 +72,10 @@ export class Game extends React.Component {
                     handler={this.handler}
                     selected={this.state.selected}
                     right={Board.NEIGHBORS_RIGHT}
-                    renderDim={renderDim}
-                    centerX={(this.state.windowWidth - 4 * renderDim) / 2 - renderDim / 2}
-                    centerY={(this.state.windowHeight - 4 * renderDim) / 2 - renderDim / 2}
-                    alignOffset={renderDim / 6}
+                    renderDim={RENDER_DIM}
+                    centerX={(WINDOW_WIDTH - 4 * RENDER_DIM) / 2 - RENDER_DIM / 2}
+                    centerY={(WINDOW_HEIGHT - 4 * RENDER_DIM) / 2 - RENDER_DIM / 2}
+                    alignOffset={RENDER_DIM / 6}
                 />
             </div>
         );

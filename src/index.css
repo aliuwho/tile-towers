@@ -1,6 +1,6 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
+    overflow: scroll;
 }
 
 ol, ul {
@@ -8,7 +8,8 @@ ol, ul {
 }
 
 .board {
-    position:absolute;
+    position: absolute;
+    padding: 20%
 }
 
 .status {
@@ -37,6 +38,6 @@ ol, ul {
     /*flex-direction: row;*/
 }
 
-.game-info {
-    margin-left: 20px;
+.header {
+    margin:5%
 }
