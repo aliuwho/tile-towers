@@ -1,17 +1,5 @@
 import React from 'react';
-
-// NOTE: palette is colorblind friendly :)
-const COLOR = {
-    RED: "rgb(238,102,119)",
-    YELLOW: "rgb(204,187,68)",
-    GREEN: "rgb(34,136,51)",
-    WHITE: "rgb(255,255,255",
-    BLACK: "rgb(0,0,0)",
-    BLUE: "rgb(68,119,170)",
-    PURPLE: "rgb(170,51,119)",
-    CYAN: "rgb(102,204,238)",
-    GREY: "rgb(187,187,187)"
-}
+import {getRenderDim, getWindowHeight, getWindowWidth} from "./util";
 
 const IMAGES = [require('./images/tile-01.png'), require('./images/tile-02.png'),
     require('./images/tile-03.png'), require('./images/tile-04.png'),
@@ -37,7 +25,7 @@ export class Tile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tileDim: this.props.renderDim * 12 / 10
+            tileDim: getRenderDim() * 12 / 10
         }
     }
 

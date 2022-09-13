@@ -4,17 +4,10 @@ body {
     height: 600px;
     font: 14px "Century Gothic", Futura, sans-serif;
     overflow: scroll;
-    border: 2px solid black;
 }
 
 ol, ul {
     padding-left: 30px;
-}
-
-.board {
-    position: absolute;
-    left: 5%;
-    top: 5%;
 }
 
 .tile {

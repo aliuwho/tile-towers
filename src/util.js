@@ -28,3 +28,12 @@ export function shuffleArray(array: any[]): any[] {
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export const WINDOW_WIDTH = 800;
+export const WINDOW_HEIGHT = 600;
+
+export function getRenderDim() {
+    let minWidth = WINDOW_WIDTH / 20;
+    let minHeight = WINDOW_HEIGHT / 11;
+    return Math.min(minWidth, minHeight);
+}
