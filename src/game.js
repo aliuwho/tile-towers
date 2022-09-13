@@ -85,7 +85,6 @@ export class Game extends React.Component {
     /**
      * Checks if the game is over.
      */
-    // TODO this function does not appear to be called after each move? or delayed update?
     playMove(tileA, tileB) {
         let numTiles = this.state.tilesRemaining;
         let newBoard = this.copyBoard();
@@ -111,7 +110,7 @@ export class Game extends React.Component {
         if (newBoard.noMoves()) {
             console.log("NO MOVES")
             if (shuffled) {
-                alert("No shuffles remaining. Game over.") // TODO RUNS TWICE
+                alert("No shuffles remaining. Game over.")
                 return;
             } else {
                 alert("No moves! Shuffling...")

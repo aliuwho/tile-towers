@@ -62,10 +62,7 @@ export class Tile extends React.Component {
                  key={this.props.index}
                  style={this.props.style}
                  width={TILE_WIDLEN + "px"}
-                 height={TILE_WIDLEN + "px"}
-                 onClick={() => {
-                     this.props.handler(this.props.index);
-                 }}>
+                 height={TILE_WIDLEN + "px"}>
                 <image className={this.props.index + this.props.type}
                        href={IMAGES[this.props.type]}
                        style={this.props.style}
