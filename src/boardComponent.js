@@ -21,7 +21,7 @@ const CENTER_Y = WINDOW_HEIGHT / 2 - TILE_DIM * 2;
 
 const ALIGN_OFFSET = TILE_DIM / 6;
 
-export class Board extends React.Component {
+export class BoardComponent extends React.Component {
     // private tiles: boolean[144];
     // private types: number[144];
     // private top: number[144];

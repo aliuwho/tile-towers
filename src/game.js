@@ -1,4 +1,4 @@
-import {Board} from "./board";
+import {BoardComponent} from "./boardComponent";
 import React from 'react';
 import {shuffleArray} from "./util";
 
@@ -70,7 +70,7 @@ export class Game extends React.Component {
                 <div>{/* status */}</div>
                 <ol>{/* TODO */}</ol>
                 {/*</div>*/}
-                <Board
+                <BoardComponent
                     types={this.state.types}
                     handler={this.handler}
                     selected={this.state.selected}

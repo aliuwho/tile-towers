@@ -1,4 +1,4 @@
-import {NUM_TILE_TYPES} from "./board";
+import {NUM_TILE_TYPES} from "./boardComponent";
 
 /**
  * Returns a random integer in the range 0...val (inclusive)
