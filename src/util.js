@@ -23,3 +23,12 @@ export function shuffleArray(array: any[]): any[] {
 export const TILE_DIM = Math.max(Math.min(window.innerWidth, window.innerHeight) / 12, 25);
 export const WINDOW_WIDTH = window.innerWidth;
 export const WINDOW_HEIGHT = window.innerHeight
+
+/**
+ * Sleep! Zzz....
+ * @param ms
+ * @returns {Promise<unknown>}
+ */
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

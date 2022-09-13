@@ -1,6 +1,7 @@
 import {BoardComponent} from "./boardComponent";
 import React from 'react';
 import Board from "./board";
+import {sleep} from "./util";
 
 export class Game extends React.Component {
     constructor(props) {
@@ -85,7 +86,7 @@ export class Game extends React.Component {
     /**
      * Checks if the game is over.
      */
-    playMove(tileA, tileB) {
+    async playMove(tileA, tileB) {
         let numTiles = this.state.tilesRemaining;
         let newBoard = this.copyBoard();
         let moveSuccess = newBoard.makeMove(tileA, tileB);
@@ -105,7 +106,13 @@ export class Game extends React.Component {
             }
         }
 
-        // Check if game ends prematurely
+        this.setState({
+            selected: -1,
+            board: newBoard,
+            tilesRemaining: numTiles,
+        })
+        await sleep(1000); // delay so board can update before shuffling
+
         let shuffled = this.state.shuffled;
         if (newBoard.noMoves()) {
             console.log("NO MOVES")
@@ -119,11 +126,10 @@ export class Game extends React.Component {
             }
         }
         this.setState({
-            selected: -1,
-            board: newBoard,
-            tilesRemaining: numTiles,
-            shuffled: shuffled
+            shuffled: shuffled,
+            board: newBoard
         })
+
         console.log(newBoard.findMove()) // TODO remove and make into hint button
     }
 
