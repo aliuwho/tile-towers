@@ -1,5 +1,5 @@
 import React from 'react';
-import {getRenderDim, getWindowHeight, getWindowWidth} from "./util";
+import {getRenderDim} from "./util";
 
 const IMAGES = [require('./images/tile-01.png'), require('./images/tile-02.png'),
     require('./images/tile-03.png'), require('./images/tile-04.png'),
