@@ -160,7 +160,7 @@ export class Game extends React.Component {
         if (moveSuccess) {
             numTiles = numTiles - 2;
             if (this.state.tilesRemaining === 2) {
-                alert("Congratulations! You win!") // TODO broken
+                alert("Congratulations! You win!")
                 // start new game
                 this.resetGameState();
                 return;
