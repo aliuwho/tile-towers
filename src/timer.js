@@ -1,21 +1,16 @@
 import React from 'react';
 
-// Source: https://stackoverflow.com/questions/40885923/countdown-timer-in-react
+// Modified from https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 export default class Timer extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            time: {},
             seconds: props.seconds
         };
-        this.timer = 0;
-        this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
     }
 
     secondsToTime(secs) {
-        let hours = Math.floor(secs / (60 * 60));
-
         let divisor_for_minutes = secs % (60 * 60);
         let minutes = Math.floor(divisor_for_minutes / 60);
 
@@ -29,21 +24,14 @@ export default class Timer extends React.Component {
             seconds = "0" + seconds
         }
 
-        return {
-            "h": hours,
-            "m": minutes,
-            "s": seconds
-        };
-    }
-
-    componentDidMount() {
-        let timeLeftVar = this.secondsToTime(this.state.seconds);
-        this.setState({time: timeLeftVar});
+        return minutes + ":" + seconds;
     }
 
     startTimer() {
-        if (this.timer === 0 && this.state.seconds > 0) {
-            this.timer = setInterval(this.countDown, 1000);
+        if (!this.state.timer) {
+            this.setState({
+                timer: setInterval(this.countDown, 1000)
+            })
         }
     }
 
@@ -54,23 +42,34 @@ export default class Timer extends React.Component {
         }
 
         // Remove one second, set state so a re-render happens.
-        let seconds = this.state.seconds - 1;
+        let updatedSeconds = this.state.seconds - 1;
         this.setState({
-            time: this.secondsToTime(seconds),
-            seconds: seconds,
+            seconds: updatedSeconds,
         });
 
         // Check if we're at zero.
-        if (seconds === 0) {
-            clearInterval(this.timer);
+        if (updatedSeconds === 0) {
+            clearInterval(this.state.timer);
         }
+    }
+
+    resetTimer() {
+        clearInterval(this.state.timer);
+        this.setState({
+            seconds: this.props.seconds,
+            timer: setInterval(this.countDown, 1000)
+        })
     }
 
     render() {
         this.startTimer();
         return (
             <div>
-                Time Remaining: {this.state.time.m}:{this.state.time.s}
+                <button onClick={() => {
+                    this.resetTimer()
+                }}>reset
+                </button>
+                Time Remaining: {this.secondsToTime(this.state.seconds)}
             </div>
         );
     }
