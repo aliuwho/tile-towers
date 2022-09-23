@@ -23,11 +23,12 @@ export class Game extends React.Component {
             board: new Board(),
             tilesRemaining: Board.NUM_TILES,
             mode: MODE.Classic,
-            hint: [-1, -1]
+            hint: [-1, -1],
+            paused: false
         };
         this.handler = this.handler.bind(this);
-        this.toggleMenuButtons = this.toggleMenuButtons.bind(this);
         this.giveHint = this.giveHint.bind(this);
+        this.togglePause = this.togglePause.bind(this);
     }
 
     handler(index) {
@@ -57,6 +58,14 @@ export class Game extends React.Component {
         </option>)
     }
 
+    renderPauseResumeButton() {
+        if (this.state.paused) {
+            return (<button onClick={this.togglePause}>Resume</button>)
+        } else {
+            return (<button onClick={this.togglePause}>Pause</button>)
+        }
+    }
+
     renderHeader() {
         return (
             <div className='header'>
@@ -71,7 +80,7 @@ export class Game extends React.Component {
                         {this.createModeOption(MODE.Unlimited)}
                     </select>
                     <button id={"shuffle-button"}
-                            disabled={this.state.shuffled}
+                            disabled={this.state.shuffled || this.state.paused}
                             className={"menu-button"}
                             onClick={() => {
                                 let newBoard = this.copyBoard();
@@ -84,6 +93,7 @@ export class Game extends React.Component {
                         Shuffle Tiles
                     </button>
                     <button id={'hint-button'}
+                            disabled={this.state.paused}
                             className={"menu-button"}
                             onClick={this.giveHint}>
                         Hint
@@ -99,7 +109,8 @@ export class Game extends React.Component {
                 <text>{"REMAINING: " + this.state.tilesRemaining}</text>
                 <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
                 <Timer seconds={GAME_LENGTH}
-                       pauseHandler={this.toggleMenuButtons}/>
+                       paused={this.state.paused}/>
+                {this.renderPauseResumeButton()}
             </div>
         )
     }
@@ -129,30 +140,22 @@ export class Game extends React.Component {
                 shuffled: false,
                 board: new Board(),
                 tilesRemaining: Board.NUM_TILES,
-                mode: mode
+                mode: mode,
+                paused: false
             })
         } else {
             this.setState({
                 selected: -1,
                 shuffled: false,
                 board: new Board(),
-                tilesRemaining: Board.NUM_TILES
+                tilesRemaining: Board.NUM_TILES,
+                paused: false
             })
         }
     }
 
     changeMode(evt) {
         this.resetGameState(evt.target.value)
-    }
-
-    /**
-     * Toggles menu buttons from disabled to enabled (and vice versa) depending on current state.
-     */
-    toggleMenuButtons() {
-        let elems = document.getElementsByClassName("menu-button");
-        for (let i = 0; i < elems.length; i++) {
-            elems[i].disabled = !elems[i].disabled;
-        }
     }
 
     /**
@@ -219,5 +222,12 @@ export class Game extends React.Component {
                 hint: [-1, -1]
             })
         }, HINT_LENGTH);
+    }
+
+    togglePause() {
+        let prevState = this.state.paused;
+        this.setState({
+            paused: !prevState
+        });
     }
 }

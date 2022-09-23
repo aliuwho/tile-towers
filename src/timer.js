@@ -5,14 +5,12 @@ export default class Timer extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            paused: false,
             time: {},
             seconds: props.seconds
         };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
-        this.togglePause = this.togglePause.bind(this);
     }
 
     secondsToTime(secs) {
@@ -50,7 +48,7 @@ export default class Timer extends React.Component {
     }
 
     countDown() {
-        if (this.state.paused) {
+        if (this.props.paused) {
             // Do not decrement timer!
             return;
         }
@@ -68,29 +66,11 @@ export default class Timer extends React.Component {
         }
     }
 
-    togglePause() {
-        let prevState = this.state.paused;
-        this.props.pauseHandler();
-        this.setState({
-            paused: !prevState
-        });
-    }
-
-    pauseResumeButton() {
-        if (this.state.paused) {
-            return (<button onClick={this.togglePause}>Resume</button>)
-        } else {
-            return (<button onClick={this.togglePause}>Pause</button>)
-        }
-    }
-
     render() {
         this.startTimer();
         return (
             <div>
                 Time Remaining: {this.state.time.m}:{this.state.time.s}
-                <br/>
-                {this.pauseResumeButton()}
             </div>
         );
     }
