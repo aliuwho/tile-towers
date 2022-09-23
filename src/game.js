@@ -63,51 +63,61 @@ export class Game extends React.Component {
         }
     }
 
+    renderMenu() {
+        return (<div className={'menu'}>
+            <label>Mode: </label>
+            <select id={'select-mode'}
+                    onChange={(event) => {
+                        this.changeMode(event)
+                    }}>
+                {this.createModeOption(MODE.Classic)}
+                {this.createModeOption(MODE.Hard)}
+                {this.createModeOption(MODE.Unlimited)}
+            </select>
+            <button id={"shuffle-button"}
+                    disabled={this.state.shuffled || this.state.paused}
+                    className={"menu-button"}
+                    onClick={() => {
+                        let newBoard = this.copyBoard();
+                        newBoard.shuffleTiles();
+                        this.setState({
+                            board: newBoard,
+                            shuffled: true
+                        })
+                    }}>
+                Shuffle Tiles
+            </button>
+            <button id={'hint-button'}
+                    disabled={this.state.paused}
+                    className={"menu-button"}
+                    onClick={this.giveHint}>
+                Hint
+            </button>
+            <button id={"new-game-button"}
+                    className={"menu-button"}
+                    onClick={() => {
+                        this.resetGameState()
+                    }}>
+                New Game
+            </button>
+            {this.renderPauseResumeButton()}
+        </div>);
+    }
+
+    renderInfo() {
+        return (<div className={'info'}>
+            Tiles remaining: {this.state.tilesRemaining} --
+            Shuffles remaining: {this.state.shuffled ? 0 : 1}
+        </div>)
+    }
+
     renderHeader() {
         return (
             <div className='header'>
-                <div id={'menu-options'}>
-                    <label>Mode: </label>
-                    <select id={'select-mode'}
-                            onChange={(event) => {
-                                this.changeMode(event)
-                            }}>
-                        {this.createModeOption(MODE.Classic)}
-                        {this.createModeOption(MODE.Hard)}
-                        {this.createModeOption(MODE.Unlimited)}
-                    </select>
-                    <button id={"shuffle-button"}
-                            disabled={this.state.shuffled || this.state.paused}
-                            className={"menu-button"}
-                            onClick={() => {
-                                let newBoard = this.copyBoard();
-                                newBoard.shuffleTiles();
-                                this.setState({
-                                    board: newBoard,
-                                    shuffled: true
-                                })
-                            }}>
-                        Shuffle Tiles
-                    </button>
-                    <button id={'hint-button'}
-                            disabled={this.state.paused}
-                            className={"menu-button"}
-                            onClick={this.giveHint}>
-                        Hint
-                    </button>
-                    <button id={"new-game-button"}
-                            className={"menu-button"}
-                            onClick={() => {
-                                this.resetGameState()
-                            }}>
-                        New Game
-                    </button>
-                </div>
-                <text>{"REMAINING: " + this.state.tilesRemaining}</text>
-                <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
+                {this.renderMenu()}
+                {this.renderInfo()}
                 <Timer seconds={GAME_LENGTH}
                        paused={this.state.paused}/>
-                {this.renderPauseResumeButton()}
             </div>
         )
     }
