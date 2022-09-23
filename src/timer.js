@@ -12,11 +12,10 @@ export default class Timer extends React.Component {
 
     /**
      * Returns a string representing the seconds remaining.
-     * @param secs
      * @returns {string}
      */
-    secondsToTime(secs) {
-        let divisor_for_minutes = secs % (60 * 60);
+    secondsToTime() {
+        let divisor_for_minutes = this.state.seconds % (60 * 60);
         let minutes = Math.floor(divisor_for_minutes / 60);
 
         let divisor_for_seconds = divisor_for_minutes % 60;
@@ -77,7 +76,7 @@ export default class Timer extends React.Component {
                     this.resetTimer()
                 }}>reset
                 </button>
-                Time Remaining: {this.secondsToTime(this.state.seconds)}
+                Time Remaining: {this.secondsToTime()}
             </div>
         );
     }
