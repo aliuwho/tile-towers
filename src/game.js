@@ -11,7 +11,8 @@ const MODE = {
     Hard: 'Hard'
 }
 
-const GAME_LENGTH = 12 * 60; // 12 min
+const GAME_LENGTH = 12 * 60; // seconds; 12 min
+const HINT_LENGTH = 2 * 1000 // milliseconds; 5 sec
 
 export class Game extends React.Component {
     constructor(props) {
@@ -21,10 +22,12 @@ export class Game extends React.Component {
             shuffled: false,
             board: new Board(),
             tilesRemaining: Board.NUM_TILES,
-            mode: MODE.Classic
+            mode: MODE.Classic,
+            hint: [-1, -1]
         };
         this.handler = this.handler.bind(this);
         this.toggleMenuButtons = this.toggleMenuButtons.bind(this);
+        this.giveHint = this.giveHint.bind(this);
     }
 
     handler(index) {
@@ -81,9 +84,8 @@ export class Game extends React.Component {
                         Shuffle Tiles
                     </button>
                     <button id={'hint-button'}
-                            disabled={true}
-                        // className={"menu-button"}
-                    >
+                            className={"menu-button"}
+                            onClick={this.giveHint}>
                         Hint
                     </button>
                     <button id={"new-game-button"}
@@ -110,6 +112,7 @@ export class Game extends React.Component {
                     tiles={this.state.board.getTiles()}
                     handler={this.handler}
                     selected={this.state.selected}
+                    hint={this.state.hint}
                     right={Board.NEIGHBORS_RIGHT}
                 />
             </div>
@@ -199,11 +202,22 @@ export class Game extends React.Component {
                 })
             }
         }
-
-        console.log(newBoard.findMove()) // TODO remove and make into hint button
     }
 
     copyBoard(): Board {
         return new Board(this.state.board.getTiles())
+    }
+
+    giveHint() {
+        this.setState({
+            hint: this.state.board.findMove()
+        })
+
+        // Hint disappears after short amount of time
+        setTimeout(() => {
+            this.setState({
+                hint: [-1, -1]
+            })
+        }, HINT_LENGTH);
     }
 }

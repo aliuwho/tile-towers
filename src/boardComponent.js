@@ -40,6 +40,7 @@ export class BoardComponent extends React.Component {
                 type={this.props.tiles[tileIndex]}
                 selected={this.props.selected}
                 handler={this.props.handler}
+                hint={this.props.hint}
                 right={this.props.right[tileIndex]}
             />
         );

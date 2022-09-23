@@ -15,7 +15,11 @@ ol, ul {
 }
 
 .tile-selected {
-    filter: drop-shadow(0 0 5px yellow) brightness(150%);
+    filter: drop-shadow(0 0 5px black) brightness(140%);
+}
+
+.tile-hinted {
+    filter: invert(70%) brightness(140%);
 }
 
 .tile-invisible {

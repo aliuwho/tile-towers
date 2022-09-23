@@ -34,7 +34,7 @@ export class Tile extends React.Component {
         if (this.props.type === -1) {
             return this.renderInvisibleTile();
         }
-        if (this.props.selected === this.props.index) {
+        if (this.isSelected()) {
             return this.renderVisibleTile("tile-selected");
         }
         return this.renderVisibleTile("tile");
@@ -49,6 +49,9 @@ export class Tile extends React.Component {
     }
 
     renderVisibleTile(className) {
+        if (!this.isSelected() && this.isHinted()) {
+            className = className + ' tile-hinted'
+        }
         return (
             <svg className={className}
                  key={this.props.index}
@@ -67,5 +70,13 @@ export class Tile extends React.Component {
                 {/*<text x={this.state.tileDim / 4} y={this.state.tileDim / 2} fill={COLOR.WHITE}>{this.props.right}</text>*/}
             </svg>
         );
+    }
+
+    isSelected() {
+        return this.props.selected === this.props.index;
+    }
+
+    isHinted() {
+        return this.props.index === this.props.hint[0] || this.props.index === this.props.hint[1];
     }
 }
