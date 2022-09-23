@@ -31,6 +31,9 @@ export default class Timer extends React.Component {
         return minutes + ":" + seconds;
     }
 
+    /**
+     * Starts timer if not yet started.
+     */
     startTimer() {
         if (!this.state.timer) {
             this.setState({
@@ -60,22 +63,10 @@ export default class Timer extends React.Component {
         }
     }
 
-    resetTimer() {
-        clearInterval(this.state.timer);
-        this.setState({
-            seconds: this.props.seconds,
-            timer: setInterval(this.countDown, 1000)
-        })
-    }
-
     render() {
         this.startTimer();
         return (
             <div>
-                <button onClick={() => {
-                    this.resetTimer()
-                }}>reset
-                </button>
                 Time Remaining: {this.secondsToTime()}
             </div>
         );
