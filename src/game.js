@@ -2,6 +2,7 @@ import {BoardComponent} from "./boardComponent";
 import React from 'react';
 import Board from "./board";
 import {sleep} from "./util";
+import Timer from "./timer";
 
 const MODE = {
     Unlimited: 'Unlimited',
@@ -87,6 +88,7 @@ export class Game extends React.Component {
                 </div>
                 <text>{"REMAINING: " + this.state.tilesRemaining}</text>
                 <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
+                <Timer seconds={12 * 60}/>
             </div>
         )
     }
@@ -106,14 +108,6 @@ export class Game extends React.Component {
                 />
             </div>
         );
-    }
-
-    timer() {
-        // TODO
-    }
-
-    pause() {
-        // TODO
     }
 
     /**
