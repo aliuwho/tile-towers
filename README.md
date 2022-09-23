@@ -29,7 +29,6 @@ game.
 
 
 ## TODO List (for personal tracking):
-- New game button
 - Hint button
 - Menu screen on load
 - Easy mode
