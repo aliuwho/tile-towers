@@ -39,19 +39,24 @@ export class Game extends React.Component {
             <div className='header'>
                 {/*<span className='score'>{`SCORE: ${this.props.score}`}</span>*/}
                 <span className='menu-buttons'>
-                    <button onClick={() => {
-                        let newBoard = this.copyBoard();
-                        newBoard.shuffleTiles();
-                        this.setState({
-                            board: newBoard
-                        })
-                    }}>Shuffle Tiles</button>
+                    <button id={"shuffle-button"}
+                            disabled={!this.shuffled}
+                            onClick={() => {
+                                let newBoard = this.copyBoard();
+                                newBoard.shuffleTiles();
+                                this.setState({
+                                    board: newBoard,
+                                    shuffled: true
+                                })
+                            }}>
+                        Shuffle Tiles
+                    </button>
                     <button disabled={true}>Pause</button>
                     <button type={'reset'} disabled={true}>New Game</button>
                     <button disabled={true}>Hint</button>
                 </span>
-                {/*<text color="black">{"SELECTED: " + this.state.selected}</text>*/}
                 <text color="black">{"REMAINING: " + this.state.tilesRemaining}</text>
+                <text color={"black"}>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
             </div>
         )
     }
