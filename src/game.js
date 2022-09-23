@@ -52,7 +52,12 @@ export class Game extends React.Component {
                         Shuffle Tiles
                     </button>
                     <button disabled={true}>Pause</button>
-                    <button type={'reset'} disabled={true}>New Game</button>
+                    <button id={"new-game-button"}
+                            onClick={() => {
+                                this.resetGameState()
+                            }}>
+                        New Game
+                    </button>
                     <button disabled={true}>Hint</button>
                 </span>
                 <text color="black">{"REMAINING: " + this.state.tilesRemaining}</text>
@@ -84,6 +89,18 @@ export class Game extends React.Component {
 
     pause() {
         // TODO
+    }
+
+    /**
+     * Resets the game.
+     */
+    resetGameState() {
+        this.setState({
+            selected: -1,
+            shuffled: false,
+            board: new Board(),
+            tilesRemaining: Board.NUM_TILES,
+        })
     }
 
     /**
