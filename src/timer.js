@@ -10,6 +10,11 @@ export default class Timer extends React.Component {
         this.countDown = this.countDown.bind(this);
     }
 
+    /**
+     * Returns a string representing the seconds remaining.
+     * @param secs
+     * @returns {string}
+     */
     secondsToTime(secs) {
         let divisor_for_minutes = secs % (60 * 60);
         let minutes = Math.floor(divisor_for_minutes / 60);
@@ -35,6 +40,9 @@ export default class Timer extends React.Component {
         }
     }
 
+    /**
+     * Interval handler function. Decrement seconds remaining.
+     */
     countDown() {
         if (this.props.paused) {
             // Do not decrement timer!
