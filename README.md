@@ -20,9 +20,6 @@ level can be solved. In the event that no moves remain, the board will auto-shuf
 
 (tbd) Unlimited Mode: Unlimited shuffles, no timer, no points. Just pure, unending tiles.
 
-(tbd) Easy Mode: Unavailable tiles are greyed out, making it easier for the player to compare matches. 2 shuffles per
-game.
-
 (in-progress) Classic Mode: 1 shuffle per game.
 
 (tbd) Hard Mode: No shuffles. If you run out of moves, you move onto the next level.
@@ -31,7 +28,6 @@ game.
 ## TODO List (for personal tracking):
 - Hint button
 - Menu screen on load
-- Easy mode
 - Classic
   - timer
   - pause

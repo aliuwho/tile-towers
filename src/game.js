@@ -61,7 +61,6 @@ export class Game extends React.Component {
                             onChange={(event) => {
                                 this.changeMode(event)
                             }}>
-                        {this.createModeOption(MODE.Easy)}
                         {this.createModeOption(MODE.Classic)}
                         {this.createModeOption(MODE.Hard)}
                         {this.createModeOption(MODE.Unlimited)}
