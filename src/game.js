@@ -40,7 +40,7 @@ export class Game extends React.Component {
                 {/*<span className='score'>{`SCORE: ${this.props.score}`}</span>*/}
                 <span className='menu-buttons'>
                     <button id={"shuffle-button"}
-                            disabled={!this.shuffled}
+                            disabled={this.state.shuffled}
                             onClick={() => {
                                 let newBoard = this.copyBoard();
                                 newBoard.shuffleTiles();
