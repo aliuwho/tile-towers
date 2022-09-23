@@ -26,12 +26,12 @@ export class Game extends React.Component {
             hint: [-1, -1],
             paused: false
         };
-        this.handler = this.handler.bind(this);
+        this.selectTile = this.selectTile.bind(this);
         this.giveHint = this.giveHint.bind(this);
         this.togglePause = this.togglePause.bind(this);
     }
 
-    handler(index) {
+    selectTile(index) {
         if (this.state.selected === -1) {
             // No tile selected
             this.setState({
@@ -44,7 +44,7 @@ export class Game extends React.Component {
             })
         } else {
             // A different tile is already selected, make move
-            this.playMove(this.state.selected, index);
+            this.playMove(this.state.selected, index).then()
         }
     }
 
@@ -121,7 +121,7 @@ export class Game extends React.Component {
                 {this.renderHeader()}
                 <BoardComponent
                     tiles={this.state.board.getTiles()}
-                    handler={this.handler}
+                    handler={this.selectTile}
                     selected={this.state.selected}
                     hint={this.state.hint}
                     right={Board.NEIGHBORS_RIGHT}
@@ -134,24 +134,18 @@ export class Game extends React.Component {
      * Resets the game.
      */
     resetGameState(mode) {
-        if (mode) {
-            this.setState({
-                selected: -1,
-                shuffled: false,
-                board: new Board(),
-                tilesRemaining: Board.NUM_TILES,
-                mode: mode,
-                paused: false
-            })
-        } else {
-            this.setState({
-                selected: -1,
-                shuffled: false,
-                board: new Board(),
-                tilesRemaining: Board.NUM_TILES,
-                paused: false
-            })
+        let newMode = mode;
+        if (newMode === null) {
+            newMode = this.state.mode;
         }
+        this.setState({
+            selected: -1,
+            shuffled: false,
+            board: new Board(),
+            tilesRemaining: Board.NUM_TILES,
+            paused: false,
+            mode: newMode
+        })
     }
 
     changeMode(evt) {
@@ -193,7 +187,6 @@ export class Game extends React.Component {
             console.log("NO MOVES")
             if (shuffled) {
                 alert("No shuffles remaining. Game over.")
-                return;
             } else {
                 alert("No moves! Shuffling...")
                 newBoard.shuffleTiles();
