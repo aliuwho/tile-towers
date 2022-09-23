@@ -16,14 +16,14 @@ where the player attempts to clear as many levels as they can.
 It is important to note that Tile Towers is mainly luck. The tiles will be randomly distributed, and therefore not every
 level can be solved. In the event that no moves remain, the board will auto-shuffle 1 time.
 
-## Custom Additions
+## Game Modes
 
-(in-progress) Unlimited Mode: Unlimited shuffles, no timer, no points. Just pure, unending tiles.
+(tbd) Unlimited Mode: Unlimited shuffles, no timer, no points. Just pure, unending tiles.
 
-(tbd) Easy Mode: Unavailable tiles are greyed out, making it easier for the player to compare matches. 1 shuffle per
+(tbd) Easy Mode: Unavailable tiles are greyed out, making it easier for the player to compare matches. 2 shuffles per
 game.
 
-(tbd) Classic Mode: All tiles look the same. 1 shuffle per game.
+(in-progress) Classic Mode: 1 shuffle per game.
 
 (tbd) Hard Mode: No shuffles. If you run out of moves, you move onto the next level.
 
@@ -31,9 +31,10 @@ game.
 ## TODO List (for personal tracking):
 - New game button
 - Hint button
-- Points?
-- Timer?
-  - pause button
 - Menu screen on load
 - Easy mode
+- Classic
+  - timer
+  - pause
+  - points?
 - Hard mode
