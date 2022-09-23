@@ -42,28 +42,30 @@ export class Game extends React.Component {
         }
     }
 
-    renderModeButton(mode) {
-        return (<button id={mode + 'ModeButton'}
-                        disabled={this.state.mode === mode}
+    createModeOption(mode) {
+        return (<option id={mode}
+                        value={mode}
                         onClick={() => {
                             this.resetGameState(mode)
                         }}>
-            {mode + ' Mode'}
-        </button>)
+            {mode}
+        </option>)
     }
 
     renderHeader() {
         return (
             <div className='header'>
-                {/*<span className='score'>{`SCORE: ${this.props.score}`}</span>*/}
-                <div className={'menu-buttons'}>
-                    {this.renderModeButton(MODE.Easy)}
-                    {this.renderModeButton(MODE.Classic)}
-                    {this.renderModeButton(MODE.Hard)}
-                    {this.renderModeButton(MODE.Unlimited)}
-                    <text>{"Game mode: " + this.state.mode}</text>
-                </div>
-                <span className='game-buttons'>
+                <div id={'menu-options'}>
+                    <label>Mode: </label>
+                    <select id={'select-mode'}
+                            onChange={(event) => {
+                                this.changeMode(event)
+                            }}>
+                        {this.createModeOption(MODE.Easy)}
+                        {this.createModeOption(MODE.Classic)}
+                        {this.createModeOption(MODE.Hard)}
+                        {this.createModeOption(MODE.Unlimited)}
+                    </select>
                     <button id={"shuffle-button"}
                             disabled={this.state.shuffled}
                             onClick={() => {
@@ -83,7 +85,7 @@ export class Game extends React.Component {
                             }}>
                         New Game
                     </button>
-                </span>
+                </div>
                 <text>{"REMAINING: " + this.state.tilesRemaining}</text>
                 <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
             </div>
@@ -135,6 +137,10 @@ export class Game extends React.Component {
                 tilesRemaining: Board.NUM_TILES
             })
         }
+    }
+
+    changeMode(evt) {
+        this.resetGameState(evt.target.value)
     }
 
     /**
