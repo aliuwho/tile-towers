@@ -50,10 +50,7 @@ export class Game extends React.Component {
 
     createModeOption(mode) {
         return (<option id={mode}
-                        value={mode}
-                        onClick={() => {
-                            this.resetGameState(mode)
-                        }}>
+                        value={mode}>
             {mode}
         </option>)
     }
