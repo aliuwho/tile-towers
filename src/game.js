@@ -11,6 +11,8 @@ const MODE = {
     Hard: 'Hard'
 }
 
+const GAME_LENGTH = 12 * 60; // 12 min
+
 export class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -20,10 +22,9 @@ export class Game extends React.Component {
             board: new Board(),
             tilesRemaining: Board.NUM_TILES,
             mode: MODE.Classic
-            // setTimeout(0, 12000); // timer for game set to 12m // TODO make timer optional
-            // TODO Menu with diff modes?
         };
         this.handler = this.handler.bind(this);
+        this.toggleMenuButtons = this.toggleMenuButtons.bind(this);
     }
 
     handler(index) {
@@ -68,6 +69,7 @@ export class Game extends React.Component {
                     </select>
                     <button id={"shuffle-button"}
                             disabled={this.state.shuffled}
+                            className={"menu-button"}
                             onClick={() => {
                                 let newBoard = this.copyBoard();
                                 newBoard.shuffleTiles();
@@ -78,8 +80,14 @@ export class Game extends React.Component {
                             }}>
                         Shuffle Tiles
                     </button>
-                    <button disabled={true}>Hint</button>
+                    <button id={'hint-button'}
+                            disabled={true}
+                        // className={"menu-button"}
+                    >
+                        Hint
+                    </button>
                     <button id={"new-game-button"}
+                            className={"menu-button"}
                             onClick={() => {
                                 this.resetGameState()
                             }}>
@@ -88,7 +96,8 @@ export class Game extends React.Component {
                 </div>
                 <text>{"REMAINING: " + this.state.tilesRemaining}</text>
                 <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
-                <Timer seconds={12 * 60}/>
+                <Timer seconds={GAME_LENGTH}
+                       pauseHandler={this.toggleMenuButtons}/>
             </div>
         )
     }
@@ -97,9 +106,6 @@ export class Game extends React.Component {
         return (
             <div className="game-component">
                 {this.renderHeader()}
-                <div>{/* status */}</div>
-                <ol>{/* TODO */}</ol>
-                {/*</div>*/}
                 <BoardComponent
                     tiles={this.state.board.getTiles()}
                     handler={this.handler}
@@ -134,6 +140,16 @@ export class Game extends React.Component {
 
     changeMode(evt) {
         this.resetGameState(evt.target.value)
+    }
+
+    /**
+     * Toggles menu buttons from disabled to enabled (and vice versa) depending on current state.
+     */
+    toggleMenuButtons() {
+        let elems = document.getElementsByClassName("menu-button");
+        for (let i = 0; i < elems.length; i++) {
+            elems[i].disabled = !elems[i].disabled;
+        }
     }
 
     /**
