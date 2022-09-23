@@ -76,14 +76,13 @@ export class Game extends React.Component {
                             }}>
                         Shuffle Tiles
                     </button>
-                    <button disabled={true}>Pause</button>
+                    <button disabled={true}>Hint</button>
                     <button id={"new-game-button"}
                             onClick={() => {
                                 this.resetGameState()
                             }}>
                         New Game
                     </button>
-                    <button disabled={true}>Hint</button>
                 </span>
                 <text>{"REMAINING: " + this.state.tilesRemaining}</text>
                 <text>{"Shuffles left: " + (this.state.shuffled ? 0 : 1)}</text>
