@@ -162,12 +162,7 @@ export class Game extends React.Component {
             if (this.state.tilesRemaining === 2) {
                 alert("Congratulations! You win!") // TODO broken
                 // start new game
-                this.setState({
-                    board: new Board(),
-                    tilesRemaining: Board.NUM_TILES,
-                    shuffled: false,
-                    selected: -1
-                });
+                this.resetGameState();
                 return;
             }
         }
