@@ -202,7 +202,7 @@ export class Game extends React.Component {
         }
     }
 
-    copyBoard(): Board {
+    copyBoard() {
         return new Board(this.state.board.getTiles())
     }
 

@@ -14,12 +14,13 @@ export default class Board {
     static NEIGHBORS_TOP = [-1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 1, 2, -1, -1, 3, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5, 6, 7, 8, -1, -1, 9, 10, 11, 12, -1, -1, 13, 14, 15, 16, -1, -1, 17, 18, 19, 20, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 21, 22, 23, 24, 25, 26, -1, -1, -1, 27, 28, 29, 30, 31, 32, -1, -1, -1, -1, -1, 33, 34, 35, 36, 37, 38, -1, -1, -1, -1, -1, -1, 39, 40, 41, 42, 43, 44, -1, -1, -1, -1, -1, 45, 46, 47, 48, 49, 50, -1, -1, -1, 51, 52, 53, 54, 55, 56, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
     static  NUM_TILES = 144;
 
-    // types: number[];
+    private _tiles: number[];
+
     constructor(tiles: number[]) {
         if (tiles) {
-            this.tiles = tiles;
+            this._tiles = tiles;
         } else {
-            this.tiles = Board.generateTypes();
+            this._tiles = Board.generateTypes();
         }
     }
 
@@ -44,7 +45,7 @@ export default class Board {
      * @returns {boolean}
      */
     tilesMatch(indexA: number, indexB: number): boolean {
-        return this.tiles[indexA] === this.tiles[indexB];
+        return this._tiles[indexA] === this._tiles[indexB];
     }
 
     /**
@@ -53,7 +54,7 @@ export default class Board {
      * @returns {boolean}
      */
     tilePlayable(tileIndex: number): boolean {
-        if (this.tiles[tileIndex] === -1) {
+        if (this._tiles[tileIndex] === -1) {
             return false;
         }
         return this.neighborsGone(NEIGHBOR_TYPE.TOP, tileIndex) &&
@@ -86,7 +87,7 @@ export default class Board {
         if (Array.isArray(indices)) {
             return indices;
         }
-        return [indices];
+        return [indices as number];
     }
 
     /**
@@ -102,7 +103,7 @@ export default class Board {
         }
         let ret = true;
         neighbors.forEach((neighbor) => {
-            ret = ret && this.tiles[neighbor] === -1;
+            ret = ret && this._tiles[neighbor] === -1;
         });
         return ret;
     }
@@ -117,8 +118,8 @@ export default class Board {
         if (this.tilePlayable(tileA) && this.tilePlayable(tileB)) {
             if (this.tilesMatch(tileA, tileB)) {
                 // Update board
-                this.tiles[tileA] = -1;
-                this.tiles[tileB] = -1;
+                this._tiles[tileA] = -1;
+                this._tiles[tileB] = -1;
                 return true;
             } else {
                 console.log("Tiles did not match.");
@@ -143,15 +144,18 @@ export default class Board {
      * Shuffles the board's tiles.
      */
     shuffleTiles(): void {
-        let currTypes = this.tiles.slice().filter(type => type !== -1)
+        let currTypes = this._tiles.slice().filter(type => type !== -1)
         currTypes = shuffleArray(currTypes);
-        let newTypes = this.tiles.slice()
+        let newTypes = this._tiles.slice()
         newTypes.forEach((type, i) => {
             if (type !== -1) {
-                newTypes[i] = currTypes.pop()
+                const type = currTypes.pop();
+                if (type) {
+                    newTypes[i] = type;
+                }
             }
         });
-        this.tiles = newTypes;
+        this._tiles = newTypes;
         if (this.noMoves()) {
             this.shuffleTiles();
         }
@@ -181,6 +185,6 @@ export default class Board {
     }
 
     getTiles() {
-        return this.tiles.slice();
+        return this._tiles.slice();
     }
 }
