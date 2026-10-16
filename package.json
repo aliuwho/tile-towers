@@ -1,7 +1,7 @@
 {
   "name": "tile-towers",
   "version": "0.1.5",
-  "homepage": ".",
+  "homepage": "http://.",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -39,12 +39,32 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.23.0",
+    "@types/node": "^26.6.5",
+    "eslint": "^8.57.1",
     "eslint-config-google": "^0.14.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-promise": "^6.0.1",
-    "eslint-plugin-react": "^7.31.8"
+    "eslint-plugin-react": "^7.31.8",
+    "prettier": "^3.9.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  },
+  "description": "A custom variation of the game Tile Towers from the popular game Webkinz.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliuwho/tile-towers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aliuwho/tile-towers/issues"
   }
 }
